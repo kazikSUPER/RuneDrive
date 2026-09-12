@@ -1,0 +1,32 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python byte-code & cache
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.pytest_cache/
+.ruff_cache/
+
+# Environments & secrets
+.env
+.env.*
+!.env.example
+
+# IDE & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+.DS_Store
+
+# Logs & build artifacts
+*.log
+dist/
+build/
+*.egg-info/
