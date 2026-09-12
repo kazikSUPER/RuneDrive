@@ -10,11 +10,27 @@ from app.core.config import settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Асинхронний життєвий цикл застосунку (Startup / Shutdown події)."""
-    # Ініціалізація підключень (пулу БД, Redis) при старті
     print(f"[*] {settings.PROJECT_NAME} starting up on v{settings.VERSION}...")
+    # Автоматичне створення таблиць для dev-середовища, якщо база доступна
+    try:
+        import app.models  # noqa: F401 - реєстрація моделей для Base.metadata
+        from app.core.database import Base, engine
+
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("[*] Database tables verified / created successfully.")
+    except Exception as e:
+        print(
+            f"[!] Info: Database not initialized yet ({e}). Healthchecks will report status."
+        )
+
     yield
-    # Акуратне закриття підключень при зупинці
+
+    # Акуратне закриття пулу з'єднань при зупинці застосунку
     print(f"[*] {settings.PROJECT_NAME} shutting down...")
+    from app.core.database import engine
+
+    await engine.dispose()
 
 
 app = FastAPI(
