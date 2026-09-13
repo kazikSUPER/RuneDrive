@@ -7,3 +7,4 @@ asyncpg>=0.29.0
 ruff>=0.6.0
 pre-commit>=3.8.0
 httpx>=0.28.0
+pytest>=8.0.0
