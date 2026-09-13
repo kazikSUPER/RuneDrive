@@ -11,10 +11,10 @@ from app.models.base import TimestampMixin
 
 
 class ItemCategory(StrEnum):
-    IMPLANT = "IMPLANT"  # Апаратні модифікації (кібер-очі, хром, Сандевістан)
-    SOFTWARE = "SOFTWARE"  # Цифрові руни, ліцензії на заклинання, прошивки
-    ALCHEMY = "ALCHEMY"  # Зілля мани, біо-еліксири регенерації
-    SERVICE = "SERVICE"  # Послуги підпільних ріпердоків
+    IMPLANT = "IMPLANT"
+    SOFTWARE = "SOFTWARE"
+    ALCHEMY = "ALCHEMY"
+    SERVICE = "SERVICE"
 
 
 class Item(Base, TimestampMixin):
@@ -34,7 +34,4 @@ class Item(Base, TimestampMixin):
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     stock_quantity: Mapped[int] = mapped_column(default=0, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-
-    # JSONB дозволяє зберігати довільні характеристики (мана, слоти, сумісність)
-    # без потреби змінювати схему реляційної БД
     specs: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)

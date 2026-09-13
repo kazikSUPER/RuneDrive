@@ -1,16 +1,13 @@
-# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# Environments
 .venv/
 venv/
 env/
 ENV/
 
-# IDE & OS
 .idea/
 .vscode/
 *.swp
@@ -18,7 +15,6 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Git & Tooling
 .git/
 .gitignore
 .pre-commit-config.yaml

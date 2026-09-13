@@ -9,7 +9,6 @@ from sqlalchemy.orm import DeclarativeBase
 
 from app.core.config import settings
 
-# Створення асинхронного рушія бази даних
 engine = create_async_engine(
     settings.async_database_url,
     echo=False,
@@ -17,7 +16,6 @@ engine = create_async_engine(
     pool_pre_ping=True,
 )
 
-# Фабрика асинхронних сесій
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,

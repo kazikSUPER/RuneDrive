@@ -11,9 +11,8 @@ from app.core.config import settings
 async def lifespan(app: FastAPI):
     """Асинхронний життєвий цикл застосунку (Startup / Shutdown події)."""
     print(f"[*] {settings.PROJECT_NAME} starting up on v{settings.VERSION}...")
-    # Автоматичне створення таблиць для dev-середовища, якщо база доступна
     try:
-        import app.models  # noqa: F401 - реєстрація моделей для Base.metadata
+        import app.models  # noqa: F401
         from app.core.database import Base, engine
 
         async with engine.begin() as conn:
@@ -26,7 +25,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    # Акуратне закриття пулу з'єднань при зупинці застосунку
     print(f"[*] {settings.PROJECT_NAME} shutting down...")
     from app.core.database import engine
 
@@ -43,7 +41,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Налаштування CORS (Cross-Origin Resource Sharing)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -52,7 +49,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Підключення роутів версії 1
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
 

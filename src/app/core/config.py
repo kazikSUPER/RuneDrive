@@ -7,14 +7,12 @@ class Settings(BaseSettings):
     DESCRIPTION: str = "Highload Marketplace for Cybernetic and Magical Modifications"
     API_V1_STR: str = "/api/v1"
 
-    # PostgreSQL Database settings
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "runedrive"
 
-    # Optional complete connection string override (e.g. for SQLite in-memory / Docker)
     DATABASE_URL: str | None = None
 
     @property
@@ -26,7 +24,6 @@ class Settings(BaseSettings):
             f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
 
-    # Redis Cache settings (for subsequent labs)
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
 
