@@ -16,7 +16,7 @@
 
 ```mermaid
 flowchart LR
-    L1["Лаба 1 (ЗДАНО)<br>Каркас + Asyncpg + Ruff"] --> L2["Лаба 2 (Поточна)<br>Auth + RBAC + IDOR + MVP"]
+    L1["Лаба 1 (Готова до здачі)<br>Каркас + Asyncpg + Ruff"] --> L2["Лаба 2 (Наступна)<br>Auth + RBAC + IDOR + MVP"]
     L2 --> L3["Лаба 3<br>Orders + ACID + Race Condition"]
     L3 --> L4["Лаба 4<br>Redis Cache-Aside + L2"]
     L4 --> L5["Лаба 5<br>Celery/ARQ Background Tasks"]
@@ -25,8 +25,8 @@ flowchart LR
 
 ---
 
-### ✅ Лабораторна робота №1: Архітектура, каркас та інженерна культура (ВИКОНАНО)
-* **Статус:** 🟢 Здано на максимальний бал (10/10).
+### 🛠️ Лабораторна робота №1: Архітектура, каркас та інженерна культура (ГОТОВА ДО ЗДАЧІ)
+* **Статус:** 🟢 100% готовність до здачі (очікує захисту на 10/10 балів).
 * **Стек:** FastAPI, PostgreSQL 16, `asyncpg`, SQLAlchemy 2.0 Async, Docker Compose, Ruff, Pre-commit.
 * **Реалізовано:**
   1. Декларативна модульна архітектура (Clean/Layered Architecture) з розділенням на `core`, `models`, `schemas`, `api`.
