@@ -1,7 +1,7 @@
 # 🏛️ Архітектурна специфікація системи «RuneDrive»
 
 ## 1. Загальний опис та обґрунтування предметної області
-**RuneDrive** — це високонавантажена цифрова платформа (E-commerce / Digital Distribution), що спеціалізується на торгівлі кібернетичними імплантами, цифровими магічними рунами (прошивками) та алхімічними еліксирами у сетингу Arcanepunk.
+**RuneDrive** — це високонавантажена цифрова платформа (E-commerce / Digital Distribution), що спеціалізується на торгівлі кібернетичними імплантами, цифровими магічними рунами (прошивками) та алхімічними еліксирами у всесвіті Arcanepunk.
 
 ### Чому обрана ця предметна область для Highload-курсу:
 1. **Екстремальні пікові навантаження (Flash Sales):** Рідкісні артефакти (наприклад, імплант «Кіроші Mk.3» або «Еліксир нескінченної мани») викидаються обмеженим тиражем (наприклад, 100 одиниць на 50 000 користувачів). Це ідеальний полігон для вивчення Race Condition, оптимістичних та песимістичних блокувань (`SELECT ... FOR UPDATE`), атомарних операцій у Redis (`DECR`, Lua-скрипти).
@@ -18,25 +18,25 @@
 flowchart TD
     Client["Клієнти (Web Browser / Mobile App / API Client)"]
 
-    subgraph Edge Layer
-        Gateway["Nginx / Traefik / API Gateway<br>(Rate Limiting & SSL Termination)"]
+    subgraph EdgeLayer ["Edge Layer"]
+        Gateway["Nginx / Traefik / API Gateway<br>(Rate Limiting and SSL Termination)"]
     end
 
-    subgraph Application Cluster [Highload Backend Cluster]
+    subgraph ApplicationCluster ["Highload Backend Cluster"]
         App1["FastAPI Instance 1<br>(ASGI / Uvicorn Workers)"]
         App2["FastAPI Instance 2<br>(ASGI / Uvicorn Workers)"]
     end
 
-    subgraph Caching & Lock Layer [L2 Memory Cache]
+    subgraph CachingLockLayer ["L2 Memory Cache and Lock Layer"]
         Redis[("Redis Cluster<br>• L2 Catalog Cache<br>• Distributed Locks (Redlock)<br>• Flash-sale Atomic Counters")]
     end
 
-    subgraph Persistence Layer [Primary RDBMS]
-        PG_Master[("PostgreSQL 16 (Master)<br>• ACID Transactions<br>• Row-level Locks (FOR UPDATE)<br>• JSONB Specs & GIN Indexes")]
+    subgraph PersistenceLayer ["Primary RDBMS Layer"]
+        PG_Master[("PostgreSQL 16 (Master)<br>• ACID Transactions<br>• Row-level Locks (FOR UPDATE)<br>• JSONB Specs and GIN Indexes")]
         PG_Replica[("PostgreSQL 16 (Read Replica)<br>• Read-heavy catalog queries")]
     end
 
-    subgraph Async Processing [Background Workers]
+    subgraph AsyncProcessing ["Background Workers"]
         Queue["RabbitMQ / Redis Broker"]
         Workers["ARQ / Celery Workers<br>• Order Processing<br>• Receipt Generation"]
     end
@@ -68,5 +68,5 @@ flowchart TD
 | **Edge / Gateway** | Nginx / Reverse Proxy | Балансування навантаження між воркерами, відсікання зловмисного трафіку (DDoS / Rate Limit), кешування статичних ресурсів. |
 | **API Backend** | FastAPI (Python 3.12) | Асинхронна неблокуюча обробка HTTP-запитів за стандартом ASGI, надшвидка серіалізація через Pydantic V2 на Rust. |
 | **RDBMS** | PostgreSQL 16 | Надійне зберігання замовлень, користувачів та каталогу. Захист цілісності даних при списанні залишків. |
-| **L2 Кеш & Блокування** | Redis 7 | Агресивне кешування топ-вибірок товарів для зменшення навантаження на диск БД; розподілені блокування для запобігання Race Condition. |
-| **Контроль якості** | Ruff & Pre-commit | Автоматизована перевірка синтаксису, безпеки та стилю коду перед фіксацією у версійному сховищі. |
+| **L2 Кеш і Блокування** | Redis 7 | Агресивне кешування топ-вибірок товарів для зменшення навантаження на диск БД; розподілені блокування для запобігання Race Condition. |
+| **Контроль якості** | Ruff і Pre-commit | Автоматизована перевірка синтаксису, безпеки та стилю коду перед фіксацією у версійному сховищі. |
