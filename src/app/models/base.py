@@ -1,7 +1,7 @@
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import DateTime
+from sqlalchemy import DateTime, Uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -14,7 +14,7 @@ class TimestampMixin:
     """Міксин з первинним ключем UUID та мітками часу."""
 
     id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
+        Uuid(as_uuid=True).with_variant(UUID(as_uuid=True), "postgresql"),
         primary_key=True,
         default=uuid.uuid4,
         index=True,

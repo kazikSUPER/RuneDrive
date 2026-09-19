@@ -1,13 +1,18 @@
+import uuid
 from decimal import Decimal
 from enum import StrEnum
+from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Numeric, String
+from sqlalchemy import JSON, Boolean, ForeignKey, Numeric, String, Uuid
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 from app.models.base import TimestampMixin
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class ItemCategory(StrEnum):
@@ -18,7 +23,7 @@ class ItemCategory(StrEnum):
 
 
 class Item(Base, TimestampMixin):
-    """Модель товару маркетплейсу RuneDrive."""
+    """Модель товару маркетплейсу RuneDrive з прив'язкою до продавця/ріпердока."""
 
     __tablename__ = "items"
 
@@ -34,4 +39,14 @@ class Item(Base, TimestampMixin):
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     stock_quantity: Mapped[int] = mapped_column(default=0, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    specs: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)
+    specs: Mapped[dict] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=dict, nullable=False
+    )
+
+    owner_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid(as_uuid=True).with_variant(UUID(as_uuid=True), "postgresql"),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+    owner: Mapped["User | None"] = relationship("User", back_populates="items")
