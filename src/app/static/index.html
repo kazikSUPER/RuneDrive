@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuneDrive - Лабораторна робота №2</title>
+    <title>RuneDrive</title>
     <style>
         :root {
             --bg-color: #f6f8fa;
@@ -52,11 +52,6 @@
         header h1 {
             font-size: 20px;
             font-weight: 600;
-        }
-
-        header p {
-            color: var(--muted-color);
-            font-size: 13px;
         }
 
         .nav-links a {
@@ -268,8 +263,7 @@
     <div class="container">
         <header>
             <div>
-                <h1>RuneDrive - Лабораторна робота №2</h1>
-                <p>Підсистема автентифікації, ролей користувачів (RBAC) та захисту IDOR</p>
+                <h1>RuneDrive</h1>
             </div>
             <div class="nav-links">
                 <a href="/docs" target="_blank">Swagger UI</a>
@@ -277,9 +271,8 @@
             </div>
         </header>
 
-        <!-- Підказки з акаунтами -->
         <div class="card">
-            <h2>Тестові облікові записи (для перевірки викладачем)</h2>
+            <h2>Тестові облікові записи</h2>
             <div class="quick-accounts">
                 <div class="account-box">
                     <div>
@@ -308,11 +301,9 @@
             </div>
         </div>
 
-        <!-- Секція входу / реєстрації (якщо не авторизований) -->
         <div id="authSection" class="card">
             <h2>Авторизація та реєстрація</h2>
             <div class="form-grid">
-                <!-- Форма входу -->
                 <div>
                     <h3 style="font-size: 14px; margin-bottom: 10px;">Вхід у систему (Login)</h3>
                     <form id="loginForm" onsubmit="handleLogin(event)">
@@ -329,7 +320,6 @@
                     <div id="loginAlert" class="alert"></div>
                 </div>
 
-                <!-- Форма реєстрації -->
                 <div>
                     <h3 style="font-size: 14px; margin-bottom: 10px;">Реєстрація нового акаунта</h3>
                     <form id="registerForm" onsubmit="handleRegister(event)">
@@ -359,7 +349,6 @@
             </div>
         </div>
 
-        <!-- Секція кабінету (коли авторизований) -->
         <div id="dashboardSection" class="card" style="display: none;">
             <h2>Особистий кабінет користувача</h2>
             <div class="user-header-info">
@@ -371,7 +360,6 @@
                 <button type="button" class="btn-danger" onclick="handleLogout()">Вийти з акаунта</button>
             </div>
 
-            <!-- Інтерактивні тести перевірки RBAC -->
             <div style="margin-bottom: 20px;">
                 <h3 style="font-size: 14px; margin-bottom: 8px;">Перевірка розмежування прав (RBAC тести):</h3>
                 <div class="test-buttons-row">
@@ -384,7 +372,6 @@
                 <pre id="apiOutput" style="display: none;"></pre>
             </div>
 
-            <!-- Блок для створення товару ріпердоком -->
             <div id="vendorActionBlock" style="display: none; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
                 <h3 style="font-size: 14px; margin-bottom: 10px;">Додати новий товар (Доступно тільки для RIPPERDOC та ADMIN):</h3>
                 <form id="createItemForm" onsubmit="handleCreateItem(event)" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: end;">
@@ -409,7 +396,6 @@
                 </form>
             </div>
 
-            <!-- Каталог товарів таблиця -->
             <div id="catalogTableBlock" style="margin-top: 16px; display: none;">
                 <h3 style="font-size: 14px; margin-bottom: 8px;">Каталог модифікацій (Items):</h3>
                 <table id="itemsTable">
@@ -652,7 +638,6 @@
             }
         }
 
-        // Автоініціалізація при відкритті
         if (authToken) {
             initUserDashboard();
         }
