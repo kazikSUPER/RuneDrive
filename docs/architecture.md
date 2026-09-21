@@ -8,65 +8,46 @@
 2. **Гетерогенні дані (JSONB):** Різні категорії товарів мають кардинально різні специфікації (імпланти потребують параметрів слотів, напруги та нейросумісності; зілля — час дії, об'єм та температуру). Використання PostgreSQL `JSONB` демонструє переваги комбінації реляційної надійності та документного NoSQL підходу.
 3. **Розподіл I/O-bound та CPU-bound навантаження:**
    - **I/O-bound:** пошук за каталогом, фільтрація за характеристиками, транзакційна фіксація замовлень.
-   - **CPU-bound:** валідація цифрових підписів рун, криптографічна перевірка ліцензій на прошивки.
+   - **CPU-bound:** валідація цифрових підписів токенів та рун, криптографічна перевірка ліцензій на прошивки.
 
 ---
 
-## 2. Діаграма архітектури системи (Mermaid)
+## 2. Реальна архітектура системи (Mermaid)
 
 ```mermaid
 flowchart TD
-    Client["Клієнти (Web Browser / Mobile App / API Client)"]
+    Client["Клієнти<br>(Swagger UI / Браузер / Pytest / API)"]
 
-    subgraph EdgeLayer ["Edge Layer"]
-        Gateway["Nginx / Traefik / API Gateway<br>(Rate Limiting and SSL Termination)"]
+    subgraph AppLayer ["FastAPI Application (Python 3.12 / Uvicorn)"]
+        Router["API Routers (v1)<br>• /auth, /users, /items<br>• /vendor, /admin, /health"]
+        Security["Security and RBAC Layer<br>• JWT Bearer (HS256)<br>• bcrypt Password Hashing<br>• IDOR Protection"]
+        Schemas["Pydantic V2 Schemas (DTO)<br>• Валідація вхідних даних<br>• Фільтрація вихідних відповідей"]
+        ORM["SQLAlchemy 2.0 Async ORM<br>(Пул з'єднань asyncpg)"]
     end
 
-    subgraph ApplicationCluster ["Highload Backend Cluster"]
-        App1["FastAPI Instance 1<br>(ASGI / Uvicorn Workers)"]
-        App2["FastAPI Instance 2<br>(ASGI / Uvicorn Workers)"]
+    subgraph StorageLayer ["Data and Cache Infrastructure (Docker Compose)"]
+        Redis[("Redis 7<br>• L2 Кешування каталогу<br>• Атомарні лічильники Flash-sales<br>• Розподілені блокування")]
+        Postgres[("PostgreSQL 16<br>• Таблиці users, items<br>• JSONB характеристики імплантів<br>• ACID-транзакції")]
     end
 
-    subgraph CachingLockLayer ["L2 Memory Cache and Lock Layer"]
-        Redis[("Redis Cluster<br>• L2 Catalog Cache<br>• Distributed Locks (Redlock)<br>• Flash-sale Atomic Counters")]
-    end
+    Client -->|"HTTP JSON / Bearer Token"| Router
+    Router --> Security
+    Router --> Schemas
+    Router --> ORM
 
-    subgraph PersistenceLayer ["Primary RDBMS Layer"]
-        PG_Master[("PostgreSQL 16 (Master)<br>• ACID Transactions<br>• Row-level Locks (FOR UPDATE)<br>• JSONB Specs and GIN Indexes")]
-        PG_Replica[("PostgreSQL 16 (Read Replica)<br>• Read-heavy catalog queries")]
-    end
-
-    subgraph AsyncProcessing ["Background Workers"]
-        Queue["RabbitMQ / Redis Broker"]
-        Workers["ARQ / Celery Workers<br>• Order Processing<br>• Receipt Generation"]
-    end
-
-    Client --> Gateway
-    Gateway --> App1
-    Gateway --> App2
-
-    App1 <--> Redis
-    App2 <--> Redis
-
-    App1 --> PG_Master
-    App2 --> PG_Master
-    App1 -.-> PG_Replica
-    App2 -.-> PG_Replica
-
-    App1 --> Queue
-    App2 --> Queue
-    Queue --> Workers
-    Workers --> PG_Master
+    ORM <-->|"Кешування та блокування"| Redis
+    ORM -->|"Асинхронні SQL-запити (asyncpg)"| Postgres
 ```
 
 ---
 
 ## 3. Компоненти системи та їх відповідальність
 
-| Компонент | Технологія | Роль у високонавантаженій архітектурі |
+| Компонент | Технологія | Роль у системі |
 | :--- | :--- | :--- |
-| **Edge / Gateway** | Nginx / Reverse Proxy | Балансування навантаження між воркерами, відсікання зловмисного трафіку (DDoS / Rate Limit), кешування статичних ресурсів. |
-| **API Backend** | FastAPI (Python 3.12) | Асинхронна неблокуюча обробка HTTP-запитів за стандартом ASGI, надшвидка серіалізація через Pydantic V2 на Rust. |
-| **RDBMS** | PostgreSQL 16 | Надійне зберігання замовлень, користувачів та каталогу. Захист цілісності даних при списанні залишків. |
-| **L2 Кеш і Блокування** | Redis 7 | Агресивне кешування топ-вибірок товарів для зменшення навантаження на диск БД; розподілені блокування для запобігання Race Condition. |
-| **Контроль якості** | Ruff і Pre-commit | Автоматизована перевірка синтаксису, безпеки та стилю коду перед фіксацією у версійному сховищі. |
+| **API Backend** | FastAPI (Python 3.12 + Uvicorn) | Асинхронна неблокуюча обробка HTTP-запитів (ASGI), маршрутизація, автоматична генерація OpenAPI / Swagger UI. |
+| **Шар безпеки (Auth & RBAC)** | PyJWT + Passlib (bcrypt) | Stateless автентифікація за JWT-токенами, хешування паролів із сіллю, перевірка ролей (BUYER, RIPPERDOC, ADMIN) та захист від IDOR. |
+| **Шар передачі даних (DTO)** | Pydantic V2 | Сувора типізація та валідація вхідних запитів, серіалізація та захист від витоку внутрішніх полів моделей. |
+| **База даних (RDBMS)** | PostgreSQL 16 + asyncpg | Надійне транзакційне збереження даних користувачів та товарів, підтримка JSONB-специфікацій для гнучких характеристик артефактів. |
+| **In-Memory сховище** | Redis 7 | L2-кешування вибірок каталогу для розвантаження бази, атомарні операції та розподілені блокування. |
+| **Контроль якості та тести** | Pytest, Ruff, Pre-commit | Наскрізне асинхронне тестування бізнес-логіки та матриці доступу, лінтинг та форматування коду. |
