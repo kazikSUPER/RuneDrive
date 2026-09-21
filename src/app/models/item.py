@@ -3,7 +3,7 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import JSON, Boolean, ForeignKey, Numeric, String, Uuid
+from sqlalchemy import Boolean, ForeignKey, Numeric, String
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -39,12 +39,10 @@ class Item(Base, TimestampMixin):
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     stock_quantity: Mapped[int] = mapped_column(default=0, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    specs: Mapped[dict] = mapped_column(
-        JSON().with_variant(JSONB, "postgresql"), default=dict, nullable=False
-    )
+    specs: Mapped[dict] = mapped_column(JSONB, default=dict, nullable=False)
 
     owner_id: Mapped[uuid.UUID | None] = mapped_column(
-        Uuid(as_uuid=True).with_variant(UUID(as_uuid=True), "postgresql"),
+        UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
         index=True,

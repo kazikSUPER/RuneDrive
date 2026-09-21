@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 import os
 from collections.abc import AsyncGenerator
 
@@ -52,8 +53,6 @@ def setup_database():
             await conn.run_sync(Base.metadata.drop_all)
         await test_engine.dispose()
         if os.path.exists(TEST_DB_FILE):
-            import contextlib
-
             with contextlib.suppress(OSError):
                 os.remove(TEST_DB_FILE)
 
