@@ -1,10 +1,15 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from app.api.v1.router import api_router
 from app.core.config import settings
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+INDEX_HTML = STATIC_DIR / "index.html"
 
 
 @asynccontextmanager
@@ -53,9 +58,20 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/", include_in_schema=False)
-async def root_redirect():
+async def root_redirect(request: Request):
+    accept_header = request.headers.get("accept", "")
+    if "text/html" in accept_header and INDEX_HTML.exists():
+        return HTMLResponse(content=INDEX_HTML.read_text(encoding="utf-8"))
     return {
         "message": f"Welcome to {settings.PROJECT_NAME}",
         "docs": "/docs",
         "health": f"{settings.API_V1_STR}/health",
+        "ui": "/ui",
     }
+
+
+@app.get("/ui", response_class=HTMLResponse, include_in_schema=False)
+async def ui_page():
+    if INDEX_HTML.exists():
+        return HTMLResponse(content=INDEX_HTML.read_text(encoding="utf-8"))
+    return HTMLResponse(content="<h1>RuneDrive UI</h1><p>index.html not found</p>")
