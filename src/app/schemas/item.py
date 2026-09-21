@@ -33,5 +33,6 @@ class ItemUpdate(BaseModel):
 
 class ItemResponse(ItemBase):
     id: uuid.UUID
+    owner_id: uuid.UUID | None = None
 
     model_config = ConfigDict(from_attributes=True)

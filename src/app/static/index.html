@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuneDrive</title>
+    <style>
+        :root {
+            --bg-color: #f6f8fa;
+            --card-bg: #ffffff;
+            --border-color: #d0d7de;
+            --text-color: #1f2328;
+            --muted-color: #656d76;
+            --primary-color: #0969da;
+            --primary-hover: #0856b3;
+            --danger-color: #cf222e;
+            --success-color: #1a7f37;
+            --warning-color: #9a6700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 24px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 12px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .quick-accounts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .account-box {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 12px;
+            background: #fcfcfc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-box .role-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-admin { background: #ffebe9; color: var(--danger-color); }
+        .badge-vendor { background: #fff8c5; color: var(--warning-color); }
+        .badge-buyer { background: #dafbe1; color: var(--success-color); }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 720px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 6px 10px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: var(--text-color);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.2);
+        }
+
+        button {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #f6f8fa;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        button:hover {
+            background-color: #f3f4f6;
+        }
+
+        button.btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-color: var(--primary-color);
+        }
+
+        button.btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button.btn-sm {
+            padding: 3px 8px;
+            font-size: 12px;
+        }
+
+        button.btn-danger {
+            background-color: var(--danger-color);
+            color: #ffffff;
+            border-color: var(--danger-color);
+        }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #dafbe1;
+            color: var(--success-color);
+            border: 1px solid #aceebb;
+        }
+
+        .alert-danger {
+            background-color: #ffebe9;
+            color: var(--danger-color);
+            border: 1px solid #ffc1ba;
+        }
+
+        .alert-info {
+            background-color: #ddf4ff;
+            color: #0969da;
+            border: 1px solid #b6e3ff;
+        }
+
+        .user-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f6f8fa;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+
+        .test-buttons-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        pre {
+            background: #f6f8fa;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            max-height: 240px;
+            margin-top: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>RuneDrive</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/docs" target="_blank">Swagger UI</a>
+                <a href="/redoc" target="_blank">ReDoc</a>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>Тестові облікові записи</h2>
+            <div class="quick-accounts">
+                <div class="account-box">
+                    <div>
+                        <span class="role-badge badge-admin">ADMIN</span>
+                        <strong>netrunner_admin</strong>
+                        <div style="font-size: 11px; color: var(--muted-color);">Pass: AdminSecret2026!</div>
+                    </div>
+                    <button type="button" class="btn-sm" onclick="fillLoginForm('netrunner_admin', 'AdminSecret2026!')">Підставити</button>
+                </div>
+                <div class="account-box">
+                    <div>
+                        <span class="role-badge badge-vendor">RIPPERDOC</span>
+                        <strong>dr_viktor</strong>
+                        <div style="font-size: 11px; color: var(--muted-color);">Pass: ViktorRipperPass1!</div>
+                    </div>
+                    <button type="button" class="btn-sm" onclick="fillLoginForm('dr_viktor', 'ViktorRipperPass1!')">Підставити</button>
+                </div>
+                <div class="account-box">
+                    <div>
+                        <span class="role-badge badge-buyer">BUYER</span>
+                        <strong>street_samurai</strong>
+                        <div style="font-size: 11px; color: var(--muted-color);">Pass: SamuraiPass123!</div>
+                    </div>
+                    <button type="button" class="btn-sm" onclick="fillLoginForm('street_samurai', 'SamuraiPass123!')">Підставити</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="authSection" class="card">
+            <h2>Авторизація та реєстрація</h2>
+            <div class="form-grid">
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 10px;">Вхід у систему (Login)</h3>
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="loginUsername">Логін (Username)</label>
+                            <input type="text" id="loginUsername" required placeholder="наприклад, street_samurai">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Пароль</label>
+                            <input type="password" id="loginPassword" required placeholder="пароль">
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Увійти</button>
+                    </form>
+                    <div id="loginAlert" class="alert"></div>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 14px; margin-bottom: 10px;">Реєстрація нового акаунта</h3>
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="regUsername">Логін (Username)</label>
+                            <input type="text" id="regUsername" required placeholder="cyber_pilot">
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail">Email</label>
+                            <input type="email" id="regEmail" required placeholder="pilot@runedrive.net">
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Пароль</label>
+                            <input type="password" id="regPassword" required placeholder="мінімум 6 символів">
+                        </div>
+                        <div class="form-group">
+                            <label for="regRole">Бажана роль</label>
+                            <select id="regRole">
+                                <option value="BUYER">BUYER (Кібер-покупець)</option>
+                                <option value="RIPPERDOC">RIPPERDOC (Вендор / Продавець)</option>
+                            </select>
+                        </div>
+                        <button type="submit" style="width: 100%;">Зареєструватися</button>
+                    </form>
+                    <div id="regAlert" class="alert"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardSection" class="card" style="display: none;">
+            <h2>Особистий кабінет користувача</h2>
+            <div class="user-header-info">
+                <div>
+                    <div><strong>Логін:</strong> <span id="currentUsername"></span></div>
+                    <div><strong>Email:</strong> <span id="currentEmail"></span></div>
+                    <div><strong>Роль у системі:</strong> <span id="currentRoleBadge" class="role-badge"></span></div>
+                </div>
+                <button type="button" class="btn-danger" onclick="handleLogout()">Вийти з акаунта</button>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 14px; margin-bottom: 8px;">Перевірка розмежування прав (RBAC тести):</h3>
+                <div class="test-buttons-row">
+                    <button type="button" onclick="testAccess('/api/v1/auth/me', 'GET')">Профіль (/auth/me)</button>
+                    <button type="button" onclick="testAccess('/api/v1/vendor/portal', 'GET')">Портал вендора (/vendor/portal)</button>
+                    <button type="button" onclick="testAccess('/api/v1/admin/dashboard', 'GET')">Адмін-панель (/admin/dashboard)</button>
+                    <button type="button" onclick="loadCatalog()">Каталог товарів (/items/)</button>
+                </div>
+                <div id="rbacAlert" class="alert"></div>
+                <pre id="apiOutput" style="display: none;"></pre>
+            </div>
+
+            <div id="vendorActionBlock" style="display: none; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                <h3 style="font-size: 14px; margin-bottom: 10px;">Додати новий товар (Доступно тільки для RIPPERDOC та ADMIN):</h3>
+                <form id="createItemForm" onsubmit="handleCreateItem(event)" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: end;">
+                    <div>
+                        <label for="itemTitle">Назва товару</label>
+                        <input type="text" id="itemTitle" required placeholder="Імплант рефлексів «Сандевістан»">
+                    </div>
+                    <div>
+                        <label for="itemCategory">Категорія</label>
+                        <select id="itemCategory">
+                            <option value="IMPLANT">IMPLANT</option>
+                            <option value="SOFTWARE">SOFTWARE</option>
+                            <option value="ALCHEMY">ALCHEMY</option>
+                            <option value="SERVICE">SERVICE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="itemPrice">Ціна (кредитів)</label>
+                        <input type="number" id="itemPrice" step="0.01" required placeholder="2500.00">
+                    </div>
+                    <button type="submit" class="btn-primary">Створити товар</button>
+                </form>
+            </div>
+
+            <div id="catalogTableBlock" style="margin-top: 16px; display: none;">
+                <h3 style="font-size: 14px; margin-bottom: 8px;">Каталог модифікацій (Items):</h3>
+                <table id="itemsTable">
+                    <thead>
+                        <tr>
+                            <th>Назва</th>
+                            <th>Категорія</th>
+                            <th>Ціна</th>
+                            <th>ID Власника (Vendor ID)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = localStorage.getItem("runedrive_token") || null;
+        let currentUser = null;
+
+        function fillLoginForm(username, password) {
+            document.getElementById("loginUsername").value = username;
+            document.getElementById("loginPassword").value = password;
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById("loginUsername").value.trim();
+            const password = document.getElementById("loginPassword").value.trim();
+            const alertBox = document.getElementById("loginAlert");
+
+            alertBox.style.display = "none";
+
+            try {
+                const response = await fetch("/api/v1/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alertBox.className = "alert alert-danger";
+                    alertBox.textContent = data.detail || "Помилка автентифікації";
+                    alertBox.style.display = "block";
+                    return;
+                }
+
+                authToken = data.access_token;
+                localStorage.setItem("runedrive_token", authToken);
+                await initUserDashboard();
+            } catch (err) {
+                alertBox.className = "alert alert-danger";
+                alertBox.textContent = "Помилка підключення до сервера";
+                alertBox.style.display = "block";
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById("regUsername").value.trim();
+            const email = document.getElementById("regEmail").value.trim();
+            const password = document.getElementById("regPassword").value.trim();
+            const role = document.getElementById("regRole").value;
+            const alertBox = document.getElementById("regAlert");
+
+            alertBox.style.display = "none";
+
+            try {
+                const response = await fetch("/api/v1/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alertBox.className = "alert alert-danger";
+                    alertBox.textContent = data.detail || "Помилка реєстрації";
+                    alertBox.style.display = "block";
+                    return;
+                }
+
+                alertBox.className = "alert alert-success";
+                alertBox.textContent = "Акаунт успішно зареєстровано! Тепер виконайте вхід.";
+                alertBox.style.display = "block";
+                fillLoginForm(username, password);
+            } catch (err) {
+                alertBox.className = "alert alert-danger";
+                alertBox.textContent = "Помилка підключення до сервера";
+                alertBox.style.display = "block";
+            }
+        }
+
+        async function initUserDashboard() {
+            if (!authToken) return;
+
+            try {
+                const res = await fetch("/api/v1/auth/me", {
+                    headers: { "Authorization": `Bearer ${authToken}` }
+                });
+
+                if (!res.ok) {
+                    handleLogout();
+                    return;
+                }
+
+                currentUser = await res.json();
+
+                document.getElementById("authSection").style.display = "none";
+                document.getElementById("dashboardSection").style.display = "block";
+
+                document.getElementById("currentUsername").textContent = currentUser.username;
+                document.getElementById("currentEmail").textContent = currentUser.email;
+
+                const roleBadge = document.getElementById("currentRoleBadge");
+                roleBadge.textContent = currentUser.role;
+                roleBadge.className = "role-badge " + (
+                    currentUser.role === "ADMIN" ? "badge-admin" :
+                    currentUser.role === "RIPPERDOC" ? "badge-vendor" : "badge-buyer"
+                );
+
+                const vendorBlock = document.getElementById("vendorActionBlock");
+                if (currentUser.role === "RIPPERDOC" || currentUser.role === "ADMIN") {
+                    vendorBlock.style.display = "block";
+                } else {
+                    vendorBlock.style.display = "none";
+                }
+
+                loadCatalog();
+            } catch (e) {
+                handleLogout();
+            }
+        }
+
+        function handleLogout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem("runedrive_token");
+            document.getElementById("authSection").style.display = "block";
+            document.getElementById("dashboardSection").style.display = "none";
+            document.getElementById("rbacAlert").style.display = "none";
+            document.getElementById("apiOutput").style.display = "none";
+        }
+
+        async function testAccess(url, method) {
+            const alertBox = document.getElementById("rbacAlert");
+            const outputBox = document.getElementById("apiOutput");
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { "Authorization": `Bearer ${authToken}` }
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alertBox.className = "alert alert-success";
+                    alertBox.textContent = `Статус 200 OK: Доступ до маршруту ${url} успішно надано!`;
+                } else {
+                    alertBox.className = "alert alert-danger";
+                    alertBox.textContent = `Статус ${res.status}: ${data.detail || "Доступ заборонено (RBAC)"}`;
+                }
+
+                alertBox.style.display = "block";
+                outputBox.textContent = JSON.stringify(data, null, 2);
+                outputBox.style.display = "block";
+            } catch (err) {
+                alertBox.className = "alert alert-danger";
+                alertBox.textContent = "Помилка виконання запиту: " + err.message;
+                alertBox.style.display = "block";
+            }
+        }
+
+        async function loadCatalog() {
+            try {
+                const res = await fetch("/api/v1/items/");
+                const items = await res.json();
+                const tableBody = document.getElementById("itemsTableBody");
+                tableBody.innerHTML = "";
+
+                items.forEach(item => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.category}</td>
+                        <td>${item.price} ₴</td>
+                        <td style="font-family: monospace; font-size: 11px;">${item.owner_id || "Анонімний"}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                document.getElementById("catalogTableBlock").style.display = "block";
+            } catch (err) {
+                console.error("Помилка завантаження каталогу", err);
+            }
+        }
+
+        async function handleCreateItem(e) {
+            e.preventDefault();
+            const title = document.getElementById("itemTitle").value.trim();
+            const category = document.getElementById("itemCategory").value;
+            const price = parseFloat(document.getElementById("itemPrice").value);
+            const slug = title.toLowerCase().replace(/[^a-z0-9]/g, "-") + "-" + Date.now().toString().slice(-4);
+
+            const alertBox = document.getElementById("rbacAlert");
+
+            try {
+                const res = await fetch("/api/v1/items/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ title, slug, category, price, specs: {} })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    alertBox.className = "alert alert-danger";
+                    alertBox.textContent = `Помилка створення: ${data.detail}`;
+                    alertBox.style.display = "block";
+                    return;
+                }
+
+                alertBox.className = "alert alert-success";
+                alertBox.textContent = `Товар «${title}» успішно створено та прив'язано до вашого ID!`;
+                alertBox.style.display = "block";
+                document.getElementById("createItemForm").reset();
+                loadCatalog();
+            } catch (err) {
+                alertBox.className = "alert alert-danger";
+                alertBox.textContent = "Помилка з'єднання: " + err.message;
+                alertBox.style.display = "block";
+            }
+        }
+
+        if (authToken) {
+            initUserDashboard();
+        }
+    </script>
+</body>
+</html>

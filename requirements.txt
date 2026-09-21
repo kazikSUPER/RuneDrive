@@ -8,3 +8,7 @@ ruff>=0.6.0
 pre-commit>=3.8.0
 httpx>=0.28.0
 pytest>=8.0.0
+pyjwt>=2.8.0
+bcrypt>=4.0.0
+email-validator>=2.2.0
+python-multipart>=0.0.12

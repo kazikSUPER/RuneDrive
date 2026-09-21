@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "runedrive"
+    POSTGRES_DB: str = "runedrive_lab2"
 
     DATABASE_URL: str | None = None
 
@@ -25,7 +25,11 @@ class Settings(BaseSettings):
         )
 
     REDIS_HOST: str = "localhost"
-    REDIS_PORT: int = 6379
+    REDIS_PORT: int = 6380
+
+    JWT_SECRET_KEY: str = "rune_super_secret_cyber_jwt_key_2026_lab2"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     model_config = SettingsConfigDict(
         env_file=".env",
