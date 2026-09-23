@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - main
+      - master
       - 'feat/**'
       - 'feature/**'
   pull_request:
     branches:
       - main
+      - master
 
 permissions:
   contents: read
@@ -134,7 +136,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=sha,prefix=,format=short
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Log in to GitHub Container Registry (GHCR)
         uses: docker/login-action@v3
