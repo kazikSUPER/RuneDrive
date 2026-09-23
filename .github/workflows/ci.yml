@@ -76,7 +76,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          pytest tests/test_health.py tests/test_root.py -v
+          pytest tests/ -v
 
   # =========================================================================
   # 3. ЗБІРКА КОНТЕЙНЕРА ТА СЕК'ЮРІТІ АУДИТ (DOCKER BUILD & TRIVY SCAN)
