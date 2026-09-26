@@ -3,34 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuneDrive | Cybernetic Marketplace MVP</title>
+    <title>RuneDrive | Маркетплейс кібернетичних та магічних модифікацій</title>
     <style>
         :root {
-            --bg-body: #0b0f19;
+            --bg-body: #0a0e17;
             --bg-card: #111827;
-            --bg-card-hover: #1f2937;
-            --bg-input: #1f2937;
-            --border: #374151;
-            --border-focus: #38bdf8;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
+            --bg-card-hover: #172033;
+            --bg-surface: #1e293b;
+            --bg-input: #0f172a;
+            --border: #2d3748;
+            --border-hover: #4b5563;
+            --border-focus: #06b6d4;
+            --text-main: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
             --primary: #0284c7;
             --primary-hover: #0369a1;
-            --accent: #38bdf8;
+            --primary-active: #075985;
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.15);
+            --purple: #8b5cf6;
+            --purple-bg: rgba(139, 92, 246, 0.12);
             --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.1);
+            --success-bg: rgba(16, 185, 129, 0.12);
             --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.1);
+            --danger-bg: rgba(239, 68, 68, 0.12);
             --warning: #f59e0b;
-            --warning-bg: rgba(245, 158, 11, 0.1);
+            --warning-bg: rgba(245, 158, 11, 0.12);
             --code-bg: #030712;
+            --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.5);
+            --shadow-pop: 0 10px 30px -4px rgba(0, 0, 0, 0.6);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
@@ -39,76 +51,123 @@
             font-size: 14px;
             line-height: 1.5;
             padding: 16px;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
+        /* --- Header & Branding --- */
         header {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px 20px;
+            border-radius: var(--radius-lg);
+            padding: 16px 24px;
             margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
+            box-shadow: var(--shadow-card);
         }
 
-        .brand {
+        .brand-wrapper {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .brand h1 {
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
             font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
             color: #ffffff;
+            box-shadow: 0 0 12px var(--cyan-glow);
         }
 
-        .brand .badge-tech {
-            font-size: 11px;
-            background: #1e293b;
-            color: var(--accent);
-            padding: 2px 8px;
-            border-radius: 4px;
+        .brand-info h1 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .brand-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .cluster-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-surface);
             border: 1px solid var(--border);
-            font-family: monospace;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
         }
 
         .header-meta {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 8px;
         }
 
         .header-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            margin-left: 10px;
-            transition: color 0.15s;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            transition: all 0.15s;
         }
 
         .header-links a:hover {
-            color: var(--accent);
+            color: var(--cyan);
+            border-color: var(--cyan);
         }
 
         .user-pill {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: #1f2937;
-            padding: 5px 12px;
-            border-radius: 6px;
+            background: var(--bg-surface);
+            padding: 4px 10px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             font-size: 12px;
         }
@@ -116,8 +175,8 @@
         .role-badge {
             font-size: 10px;
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 2px 7px;
+            border-radius: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -127,63 +186,89 @@
         .role-buyer { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
         .role-guest { background: #374151; color: #9ca3af; }
 
+        /* --- Quick Demo Selector --- */
         .demo-bar {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
             margin-bottom: 16px;
+        }
+
+        .demo-bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
         .demo-bar-title {
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
+        }
+
+        .demo-bar-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         .demo-accounts {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 10px;
         }
 
         .demo-card {
-            background: #0f172a;
+            background: var(--bg-surface);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
+            transition: all 0.15s ease-in-out;
         }
 
         .demo-card:hover {
-            border-color: var(--accent);
-            background: #1e293b;
+            border-color: var(--cyan);
+            background: #253347;
+            transform: translateY(-1px);
         }
 
+        .demo-card-info strong {
+            display: block;
+            font-size: 13px;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        .demo-card-info span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* --- Tabs Navigation --- */
         .tabs-nav {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 16px;
             overflow-x: auto;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
         .tab-btn {
-            background: #111827;
+            background: var(--bg-card);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 8px 14px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -193,42 +278,268 @@
 
         .tab-btn:hover {
             color: var(--text-main);
-            border-color: #4b5563;
+            border-color: var(--border-hover);
         }
 
         .tab-btn.active {
             background: var(--primary);
             border-color: var(--primary);
             color: #ffffff;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
         }
 
         .tab-pane {
             display: none;
+            animation: fadeIn 0.2s ease-in-out;
         }
 
         .tab-pane.active {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Common Card Elements --- */
         .card {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: var(--radius-md);
+            padding: 22px;
             margin-bottom: 16px;
+            box-shadow: var(--shadow-card);
         }
 
         .card-title {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
+            color: #ffffff;
         }
 
+        /* --- Filters & Search --- */
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 18px;
+            background: var(--bg-surface);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .filter-row input {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .filter-row select {
+            min-width: 180px;
+        }
+
+        /* --- Items Grid & Humanized Cards --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 16px;
+        }
+
+        .item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+
+        .item-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -4px rgba(6, 182, 212, 0.2);
+        }
+
+        .item-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            gap: 8px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .category-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .cat-IMPLANT { background: rgba(6, 182, 212, 0.15); color: var(--cyan); border: 1px solid var(--cyan); }
+        .cat-SOFTWARE { background: var(--purple-bg); color: #c084fc; border: 1px solid var(--purple); }
+        .cat-ALCHEMY { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+        .cat-SERVICE { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
+
+        .item-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 10px 0;
+            padding: 8px 12px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 0.5px;
+        }
+
+        .stock-tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .stock-available { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+        .stock-low { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
+        .stock-empty { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
+        .specs-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 14px 0;
+            min-height: 28px;
+        }
+
+        .spec-chip {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: var(--text-secondary);
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .owner-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .item-actions {
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        /* --- Orders Section (Lab 1 Integration) --- */
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+        }
+
+        .order-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.15s;
+        }
+
+        .order-card:hover {
+            border-color: var(--cyan);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .order-id {
+            font-weight: 700;
+            font-size: 13px;
+            color: #ffffff;
+            font-family: monospace;
+        }
+
+        .order-status {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-PENDING { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
+        .status-CONFIRMED { background: var(--cyan-glow); color: var(--cyan); border: 1px solid var(--cyan); }
+        .status-COMPLETED { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+        .status-CANCELLED { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
+        .order-meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .order-items-list {
+            margin-top: 10px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .order-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .order-item-row:last-child {
+            border-bottom: none;
+        }
+
+        /* --- Forms & Inputs --- */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -236,48 +547,54 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-size: 12px;
-            font-weight: 500;
-            color: var(--text-muted);
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 14px;
             font-size: 13px;
             background-color: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             color: var(--text-main);
-            transition: border-color 0.15s;
+            transition: all 0.15s;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
         }
 
+        /* --- Buttons --- */
         button {
-            padding: 7px 14px;
+            padding: 9px 16px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            background-color: #1f2937;
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-surface);
             color: var(--text-main);
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.15s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         button:hover {
-            background-color: #374151;
-            border-color: #4b5563;
+            background-color: #273549;
+            border-color: var(--border-hover);
         }
 
         button.btn-primary {
@@ -288,6 +605,19 @@
 
         button.btn-primary:hover {
             background-color: var(--primary-hover);
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+        }
+
+        button.btn-buy {
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        button.btn-buy:hover {
+            background: linear-gradient(135deg, #0369a1, #0891b2);
+            box-shadow: 0 0 14px var(--cyan-glow);
         }
 
         button.btn-danger {
@@ -313,19 +643,14 @@
         }
 
         button.btn-sm {
-            padding: 4px 8px;
+            padding: 5px 10px;
             font-size: 12px;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
+        /* --- Banners & Alerts --- */
         .banner {
-            padding: 12px 16px;
-            border-radius: 6px;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
             margin-bottom: 16px;
             font-size: 13px;
             line-height: 1.4;
@@ -334,133 +659,117 @@
         .banner-success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
         .banner-danger { background: var(--danger-bg); border: 1px solid var(--danger); color: var(--danger); }
         .banner-warning { background: var(--warning-bg); border: 1px solid var(--warning); color: var(--warning); }
-        .banner-info { background: rgba(56, 189, 248, 0.1); border: 1px solid var(--accent); color: var(--accent); }
+        .banner-info { background: rgba(6, 182, 212, 0.1); border: 1px solid var(--cyan); color: var(--cyan); }
 
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 14px;
-            margin-top: 14px;
-        }
-
-        .item-card {
-            background: #0f172a;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: border-color 0.15s;
-        }
-
-        .item-card:hover {
-            border-color: #4b5563;
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-
-        .item-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .item-cat-badge {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: #1e293b;
-            color: var(--accent);
-            border: 1px solid var(--border);
-            text-transform: uppercase;
-        }
-
-        .item-price {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 6px 0;
-            font-family: monospace;
-        }
-
-        .item-meta {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .item-specs {
-            background: #090d16;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 6px 8px;
-            margin-bottom: 12px;
-            font-family: monospace;
-            font-size: 11px;
-            color: #cbd5e1;
-            max-height: 70px;
-            overflow-y: auto;
-        }
-
-        .owner-tag {
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 3px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
-        .owner-me { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
-        .owner-other { background: #1f2937; color: var(--text-muted); border: 1px solid var(--border); }
-
-        .item-actions {
-            border-top: 1px solid var(--border);
-            padding-top: 10px;
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: auto;
-        }
-
+        /* --- Stat Cards --- */
         .stat-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
         .stat-card {
-            background: #0f172a;
+            background: var(--bg-surface);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 14px;
+            border-radius: var(--radius-sm);
+            padding: 16px;
             text-align: center;
         }
 
         .stat-val {
             font-size: 24px;
-            font-weight: 700;
-            color: var(--accent);
-            font-family: monospace;
+            font-weight: 800;
+            color: var(--cyan);
             margin-top: 4px;
+            font-family: monospace;
         }
 
         .stat-lbl {
             font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
+            font-weight: 600;
         }
 
+        /* --- Modals --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            max-width: 520px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow-pop);
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- Toast Notifications (Replacing Alert Dialogs) --- */
+        #toastContainer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 18px;
+            box-shadow: var(--shadow-pop);
+            color: #ffffff;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            pointer-events: auto;
+            animation: toastIn 0.25s ease-out;
+            transition: all 0.2s;
+        }
+
+        .toast-success { border-left: 4px solid var(--success); }
+        .toast-error { border-left: 4px solid var(--danger); }
+        .toast-warning { border-left: 4px solid var(--warning); }
+        .toast-info { border-left: 4px solid var(--cyan); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- Logs & Inspector --- */
         .http-log-entry {
             background: var(--code-bg);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             padding: 10px 14px;
             margin-bottom: 8px;
             font-family: monospace;
@@ -476,64 +785,34 @@
         }
 
         .status-2xx { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
-        .status-401 { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
-        .status-403 { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
         .status-4xx { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
-
-        .filter-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .filter-row input {
-            max-width: 280px;
-        }
-
-        .filter-row select {
-            max-width: 180px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 16px;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            max-width: 540px;
-            width: 100%;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+        .status-5xx { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
     </style>
 </head>
 <body>
+    <div id="toastContainer"></div>
+
     <div class="container">
+        <!-- Головна шапка платформи -->
         <header>
-            <div class="brand">
-                <h1>RuneDrive</h1>
-                <span class="badge-tech">API v0.1.0 Highload MVP</span>
+            <div class="brand-wrapper">
+                <div class="brand-logo">RD</div>
+                <div class="brand-info">
+                    <h1>RuneDrive</h1>
+                    <p>Маркетплейс кібернетичних імплантів та цифрових рун</p>
+                </div>
             </div>
+
+            <div class="cluster-status-pill">
+                <div class="status-dot"></div>
+                <span>Кластер:</span>
+                <strong id="clusterNodeId" style="color: var(--cyan); font-family: monospace;">runedrive-api</strong>
+                <span id="clusterPing" style="color: var(--text-muted); font-size: 11px;">(0 ms)</span>
+            </div>
+
             <div class="header-meta">
                 <div class="header-links">
                     <a href="/docs" target="_blank">[Swagger UI]</a>
-                    <a href="/redoc" target="_blank">[ReDoc]</a>
                     <a href="/api/v1/health" target="_blank">[Health]</a>
                 </div>
                 <div id="currentUserPill" class="user-pill">
@@ -544,64 +823,70 @@
             </div>
         </header>
 
+        <!-- Блок швидкого входу для тестування (RBAC демонстрація) -->
         <div class="demo-bar">
-            <div class="demo-bar-title">
-                <span>Швидкий вхід під тестовими акаунтами (RBAC демо):</span>
-                <span style="font-weight: normal; text-transform: none;">Клікніть для миттєвої автентифікації</span>
+            <div class="demo-bar-header">
+                <div class="demo-bar-title">Швидкий тестовий вхід (Демонстрація ролей RBAC):</div>
+                <div class="demo-bar-subtitle">Клікніть на картку для миттєвої авторизації</div>
             </div>
             <div class="demo-accounts">
-                <div class="demo-card" onclick="quickLogin('netrunner_admin', 'AdminSecret2026!')">
-                    <div>
-                        <span class="role-badge role-admin">ADMIN</span>
-                        <strong>netrunner_admin</strong>
-                        <div style="font-size: 11px; color: var(--text-muted);">Повний доступ: /admin/dashboard + модерація</div>
+                <div class="demo-card" onclick="quickLogin('street_samurai', 'SamuraiPass123!')">
+                    <div class="demo-card-info">
+                        <span class="role-badge role-buyer">BUYER (Покупець)</span>
+                        <strong>street_samurai</strong>
+                        <span>Перегляд каталогу, покупки, оформлення замовлень</span>
                     </div>
                     <button type="button" class="btn-sm btn-primary">Увійти</button>
                 </div>
+
                 <div class="demo-card" onclick="quickLogin('dr_viktor', 'ViktorRipperPass1!')">
-                    <div>
-                        <span class="role-badge role-ripperdoc">RIPPERDOC</span>
+                    <div class="demo-card-info">
+                        <span class="role-badge role-ripperdoc">RIPPERDOC (Вендор)</span>
                         <strong>dr_viktor</strong>
-                        <div style="font-size: 11px; color: var(--text-muted);">Продавець: /vendor/portal + створення своїх товарів</div>
+                        <span>Клініка Кабукі: додавання та керування своїми товарами</span>
                     </div>
                     <button type="button" class="btn-sm btn-warning">Увійти</button>
                 </div>
-                <div class="demo-card" onclick="quickLogin('street_samurai', 'SamuraiPass123!')">
-                    <div>
-                        <span class="role-badge role-buyer">BUYER</span>
-                        <strong>street_samurai</strong>
-                        <div style="font-size: 11px; color: var(--text-muted);">Покупець: перегляд товарів, покупки, свій профіль</div>
+
+                <div class="demo-card" onclick="quickLogin('netrunner_admin', 'AdminSecret2026!')">
+                    <div class="demo-card-info">
+                        <span class="role-badge role-admin">ADMIN (Адміністратор)</span>
+                        <strong>netrunner_admin</strong>
+                        <span>Повний доступ: адмін-панель, модерація товарів і замовлень</span>
                     </div>
                     <button type="button" class="btn-sm btn-primary">Увійти</button>
                 </div>
             </div>
         </div>
 
+        <!-- Навігація вкладками -->
         <nav class="tabs-nav">
             <button class="tab-btn active" onclick="switchTab('catalogTab')">Каталог модифікацій</button>
+            <button class="tab-btn" onclick="switchTab('ordersTab')">Мої замовлення</button>
             <button class="tab-btn" onclick="switchTab('createItemTab')">Додати товар</button>
-            <button class="tab-btn" onclick="switchTab('vendorTab')">Кабінет ріпердока</button>
-            <button class="tab-btn" onclick="switchTab('adminTab')">Адмін-панель</button>
-            <button class="tab-btn" onclick="switchTab('profileTab')">Мій профіль & IDOR</button>
+            <button class="tab-btn" onclick="switchTab('vendorTab')">Кабінет ріппердока</button>
+            <button class="tab-btn" onclick="switchTab('adminTab')">Адміністрація</button>
+            <button class="tab-btn" onclick="switchTab('profileTab')">Профіль та безпека</button>
             <button class="tab-btn" onclick="switchTab('authTab')">Вхід / Реєстрація</button>
-            <button class="tab-btn" onclick="switchTab('consoleTab')">Консоль API</button>
+            <button class="tab-btn" onclick="switchTab('consoleTab')">Журнал запитів</button>
         </nav>
 
+        <!-- Вкладка 1: Каталог товарів -->
         <div id="catalogTab" class="tab-pane active">
             <div class="card">
                 <div class="card-title">
-                    <span>Вітрина модифікацій (Items Catalog)</span>
-                    <button type="button" class="btn-sm" onclick="loadCatalog()">Оновити каталог</button>
+                    <span>Вітрина артефактів та модифікацій</span>
+                    <button type="button" class="btn-sm" onclick="loadCatalog()">Оновити вітрину</button>
                 </div>
 
                 <div class="filter-row">
-                    <input type="text" id="searchInput" placeholder="Пошук за назвою чи слагом..." oninput="filterCatalog()">
+                    <input type="text" id="searchInput" placeholder="Пошук за назвою або слагом..." oninput="filterCatalog()">
                     <select id="categoryFilter" onchange="filterCatalog()">
-                        <option value="">Усі категорії</option>
-                        <option value="IMPLANT">IMPLANT (Імпланти)</option>
-                        <option value="SOFTWARE">SOFTWARE (Програми/Руни)</option>
-                        <option value="ALCHEMY">ALCHEMY (Біо-алхімія)</option>
-                        <option value="SERVICE">SERVICE (Послуги)</option>
+                        <option value="">Усі категорії товарів</option>
+                        <option value="IMPLANT">IMPLANT (Кібернетичні імпланти)</option>
+                        <option value="SOFTWARE">SOFTWARE (Цифрові руни / прошивки)</option>
+                        <option value="ALCHEMY">ALCHEMY (Біо-алхімічні стимулятори)</option>
+                        <option value="SERVICE">SERVICE (Хірургічні послуги)</option>
                     </select>
                     <span id="catalogCount" style="font-size: 12px; color: var(--text-muted); margin-left: auto;"></span>
                 </div>
@@ -611,15 +896,29 @@
             </div>
         </div>
 
+        <!-- Вкладка 2: Мої замовлення (Лабораторна 1) -->
+        <div id="ordersTab" class="tab-pane">
+            <div class="card">
+                <div class="card-title">
+                    <span>Історія та статус замовлень (Orders Lifecycle)</span>
+                    <button type="button" class="btn-sm" onclick="loadOrders()">Оновити замовлення</button>
+                </div>
+
+                <div id="ordersNotice" class="banner banner-info" style="display: none;"></div>
+                <div id="ordersGrid" class="orders-grid"></div>
+            </div>
+        </div>
+
+        <!-- Вкладка 3: Додати товар -->
         <div id="createItemTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
-                    <span>Створення нового товару / модифікації</span>
-                    <span class="role-badge role-ripperdoc">RIPPERDOC або ADMIN</span>
+                    <span>Створення нової модифікації в каталозі</span>
+                    <span class="role-badge role-ripperdoc">Доступно: RIPPERDOC / ADMIN</span>
                 </div>
 
-                <div id="createItemNotice" class="banner banner-info">
-                    <strong>Контроль доступу (RBAC):</strong> Створювати товари в каталозі дозволено виключно продавцям (роль <code>RIPPERDOC</code>) та системним адміністраторам (роль <code>ADMIN</code>). Якщо спробувати створити товар під роллю <code>BUYER</code>, сервер заблокує запит зі статусом <code>403 Forbidden</code>.
+                <div class="banner banner-info">
+                    <strong>Контроль доступу (RBAC):</strong> Створювати товари в каталозі дозволено виключно продавцям (роль <code>RIPPERDOC</code>) та адміністраторам (роль <code>ADMIN</code>). Якщо спробувати створити товар під роллю <code>BUYER</code>, сервер поверне <code>403 Forbidden</code>.
                 </div>
 
                 <div id="createItemAlert" style="display: none;"></div>
@@ -627,11 +926,11 @@
                 <form id="createItemForm" onsubmit="handleCreateItem(event)">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="newTitle">Назва товару</label>
-                            <input type="text" id="newTitle" required placeholder="наприклад, Нейро-імплант «Керензіков»">
+                            <label for="newTitle">Назва модифікації</label>
+                            <input type="text" id="newTitle" required placeholder="наприклад, Сандевістан Mk.4 «Варп»">
                         </div>
                         <div class="form-group">
-                            <label for="newCategory">Категорія</label>
+                            <label for="newCategory">Категорія товару</label>
                             <select id="newCategory" required>
                                 <option value="IMPLANT">IMPLANT (Кібер-імплант)</option>
                                 <option value="SOFTWARE">SOFTWARE (Цифрова руна / софт)</option>
@@ -640,18 +939,18 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="newPrice">Ціна (кредитів)</label>
-                            <input type="number" id="newPrice" step="0.01" min="0" required placeholder="3200.00">
+                            <label for="newPrice">Ціна (кредитів CR)</label>
+                            <input type="number" id="newPrice" step="0.01" min="0" required placeholder="2800.00">
                         </div>
                         <div class="form-group">
-                            <label for="newStock">Кількість на складі (Stock)</label>
-                            <input type="number" id="newStock" min="0" value="10" required>
+                            <label for="newStock">Кількість на складі (Stock Quantity)</label>
+                            <input type="number" id="newStock" min="1" value="15" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="newSpecs">Технічні специфікації (JSON specs)</label>
-                        <textarea id="newSpecs" rows="3" placeholder='{"boost": "+25% до реакції", "energy_drain": "12W"}' style="font-family: monospace;"></textarea>
+                        <label for="newSpecs">Технічні характеристики (JSONB специфікації)</label>
+                        <textarea id="newSpecs" rows="3" placeholder='{"speed_boost": "+40%", "cooling_time": "15s", "slot": "Spine"}' style="font-family: monospace;"></textarea>
                     </div>
 
                     <button type="submit" class="btn-primary" style="margin-top: 6px;">Створити товар у каталозі</button>
@@ -659,10 +958,11 @@
             </div>
         </div>
 
+        <!-- Вкладка 4: Кабінет ріппердока -->
         <div id="vendorTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
-                    <span>Особистий кабінет продавця (Ripperdoc Portal)</span>
+                    <span>Особистий портал продавця (Ripperdoc Portal)</span>
                     <button type="button" class="btn-sm" onclick="loadVendorPortal()">Оновити дані</button>
                 </div>
 
@@ -675,7 +975,7 @@
                             <div id="vendorName" class="stat-val" style="font-size: 18px;">-</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-lbl">Активні модифікації в продажу</div>
+                            <div class="stat-lbl">Активні товари в продажу</div>
                             <div id="vendorItemsCount" class="stat-val">0</div>
                         </div>
                         <div class="stat-card">
@@ -685,17 +985,18 @@
                     </div>
 
                     <div class="banner banner-info">
-                        <strong>Правило володіння (IDOR захист):</strong> Як продавець, ви можете редагувати та видаляти виключно ті товари, де вказано ваш Vendor UUID. Будь-яка спроба модифікувати товар іншого ріпердока поверне помилку <code>403 Forbidden</code>.
+                        <strong>Захист від IDOR (Ownership Rule):</strong> Як ріппердок, ви маєте повні права на редагування та списання виключно тих товарів, де вказано ваш Vendor UUID. Спроба змінити товар іншого продавця відхиляється сервером зі статусом <code>403 Forbidden</code>.
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Вкладка 5: Адміністрація -->
         <div id="adminTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
                     <span>Командний центр адміністратора (Admin Dashboard)</span>
-                    <button type="button" class="btn-sm" onclick="loadAdminDashboard()">Оновити дані</button>
+                    <button type="button" class="btn-sm" onclick="loadAdminDashboard()">Оновити аналітику</button>
                 </div>
 
                 <div id="adminBanner" style="display: none;"></div>
@@ -703,11 +1004,11 @@
                 <div id="adminContent" style="display: none;">
                     <div class="stat-cards">
                         <div class="stat-card">
-                            <div class="stat-lbl">Зареєстрованих користувачів</div>
+                            <div class="stat-lbl">Користувачів у системі</div>
                             <div id="adminUsersCount" class="stat-val">0</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-lbl">Товарів у каталозі</div>
+                            <div class="stat-lbl">Позицій у каталозі</div>
                             <div id="adminItemsCount" class="stat-val">0</div>
                         </div>
                         <div class="stat-card">
@@ -716,17 +1017,18 @@
                         </div>
                         <div class="stat-card">
                             <div class="stat-lbl">Режим безпеки</div>
-                            <div id="adminSecurityMode" class="stat-val" style="font-size: 13px; color: var(--accent);">-</div>
+                            <div id="adminSecurityMode" class="stat-val" style="font-size: 13px; color: var(--cyan);">-</div>
                         </div>
                     </div>
 
                     <div class="banner banner-success">
-                        <strong>Роль ADMIN:</strong> Має найвищий рівень привілеїв. Адміністратор може редагувати та видаляти будь-які товари в системі, незалежно від того, якому ріпердоку вони належать.
+                        <strong>Привілеї ADMIN:</strong> Адміністратор володіє найвищим рівнем доступу (RBAC Tier 1) і може модератувати будь-які товари та переглядати загальні показники кластера.
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Вкладка 6: Профіль та IDOR тест -->
         <div id="profileTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
@@ -736,10 +1038,10 @@
 
                 <div id="profileAlert" style="display: none;"></div>
 
-                <div id="profileDetails" style="margin-bottom: 20px;">
+                <div id="profileDetails" style="margin-bottom: 24px;">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>ID користувача (UUID)</label>
+                            <label>ID облікового запису (UUID)</label>
                             <input type="text" id="myUserId" readonly style="font-family: monospace; background: #090d16;">
                         </div>
                         <div class="form-group">
@@ -751,39 +1053,40 @@
                             <input type="email" id="myEmail">
                         </div>
                         <div class="form-group">
-                            <label>Новий пароль (залиште пустим, якщо не змінюєте)</label>
+                            <label>Новий пароль (залиште порожнім, якщо не змінюєте)</label>
                             <input type="password" id="myNewPassword" placeholder="Введіть новий пароль">
                         </div>
                     </div>
                     <button type="button" class="btn-primary" onclick="updateOwnProfile()">Зберегти зміни власного профілю</button>
                 </div>
 
-                <div class="card" style="border-color: var(--danger); background: #0a060a; margin-top: 20px;">
-                    <div class="card-title" style="border-color: #581c24;">
+                <div class="card" style="border-color: var(--danger); background: #12090b;">
+                    <div class="card-title" style="border-color: rgba(239, 68, 68, 0.3);">
                         <span style="color: var(--danger);">Демонстрація захисту від IDOR (Спроба зламу чужого профілю)</span>
                         <span class="role-badge role-admin">IDOR TEST</span>
                     </div>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-                        Введіть довільний чужий UUID (або використайте тестовий) та спробуйте відправити запит на його зміну під вашим поточним токеном.
+                        Введіть довільний чужий UUID та спробуйте відправити запит на його зміну під вашим поточним токеном. Сервер повинен надійно заблокувати несанкціоновану зміну чужих даних.
                     </p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <input type="text" id="targetIdorUserId" value="00000000-0000-0000-0000-000000000001" style="font-family: monospace; flex: 1; min-width: 280px;">
-                        <button type="button" class="btn-danger" onclick="testIdorAttack()">Атакувати чужий профіль (PATCH)</button>
+                        <button type="button" class="btn-danger" onclick="testIdorAttack()">Виконати атаку IDOR (PATCH)</button>
                     </div>
-                    <div id="idorAlert" style="display: none; margin-top: 12px;"></div>
+                    <div id="idorAlert" style="display: none; margin-top: 14px;"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Вкладка 7: Авторизація -->
         <div id="authTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
-                    <span>Автентифікація та реєстрація</span>
+                    <span>Автентифікація та реєстрація користувачів</span>
                 </div>
 
                 <div class="form-grid">
                     <div>
-                        <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--accent);">Вхід у систему (Login)</h3>
+                        <h3 style="font-size: 15px; margin-bottom: 14px; color: var(--cyan);">Вхід у систему (Login)</h3>
                         <div id="loginAlert" style="display: none;"></div>
                         <form id="loginForm" onsubmit="handleManualLogin(event)">
                             <div class="form-group">
@@ -799,12 +1102,12 @@
                     </div>
 
                     <div>
-                        <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--accent);">Реєстрація нового користувача</h3>
+                        <h3 style="font-size: 15px; margin-bottom: 14px; color: var(--cyan);">Реєстрація нового акаунта</h3>
                         <div id="regAlert" style="display: none;"></div>
                         <form id="registerForm" onsubmit="handleRegister(event)">
                             <div class="form-group">
                                 <label for="regUsername">Логін</label>
-                                <input type="text" id="regUsername" required placeholder="cyber_pilot">
+                                <input type="text" id="regUsername" required placeholder="net_pilot">
                             </div>
                             <div class="form-group">
                                 <label for="regEmail">Email</label>
@@ -815,9 +1118,9 @@
                                 <input type="password" id="regPassword" required minlength="6" placeholder="надійний пароль">
                             </div>
                             <div class="form-group">
-                                <label for="regRole">Роль користувача</label>
+                                <label for="regRole">Роль у системі</label>
                                 <select id="regRole">
-                                    <option value="BUYER">BUYER (Кібер-покупець)</option>
+                                    <option value="BUYER">BUYER (Покупець модифікацій)</option>
                                     <option value="RIPPERDOC">RIPPERDOC (Вендор / Продавець)</option>
                                 </select>
                             </div>
@@ -828,23 +1131,72 @@
             </div>
         </div>
 
+        <!-- Вкладка 8: Консоль HTTP запитів -->
         <div id="consoleTab" class="tab-pane">
             <div class="card">
                 <div class="card-title">
-                    <span>Консоль HTTP запитів (Live API Inspector)</span>
-                    <button type="button" class="btn-sm" onclick="clearHttpLog()">Очистити логи</button>
+                    <span>Журнал мережевих запитів API (Live HTTP Inspector)</span>
+                    <button type="button" class="btn-sm" onclick="clearHttpLog()">Очистити журнал</button>
                 </div>
                 <div id="httpLogsContainer">
-                    <div style="color: var(--text-muted); font-size: 13px;">Логи запитів порожні. Здійсніть будь-яку дію у системі.</div>
+                    <div style="color: var(--text-muted); font-size: 13px;">Журнал запитів порожній. Здійсніть будь-яку дію у системі.</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Модальне вікно оформлення замовлення (Lab 1) -->
+    <div id="orderModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="card-title">
+                <span>Оформлення замовлення</span>
+                <button type="button" class="btn-sm" onclick="closeOrderModal()">Закрити</button>
+            </div>
+
+            <div id="orderModalAlert" style="display: none;"></div>
+
+            <form id="orderForm" onsubmit="handleConfirmOrder(event)">
+                <input type="hidden" id="orderItemId">
+                <div style="margin-bottom: 14px; background: var(--bg-surface); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <div id="orderItemTitle" style="font-weight: 700; font-size: 15px; color: #ffffff;">-</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px;">
+                        <span>Ціна за одиницю:</span>
+                        <strong id="orderItemUnitPrice" style="color: var(--cyan);">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 13px;">
+                        <span>Доступно на складі:</span>
+                        <span id="orderItemAvailableStock" style="color: var(--text-muted);">-</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="orderQuantity">Кількість одиниць</label>
+                    <input type="number" id="orderQuantity" min="1" value="1" required oninput="recalcOrderTotal()">
+                </div>
+
+                <div class="form-group">
+                    <label for="orderDeliveryPoint">Точка доставки / Дроп-поінт</label>
+                    <input type="text" id="orderDeliveryPoint" required value="Night City Drop-Point #42, Kabuki">
+                </div>
+
+                <div style="margin: 16px 0; padding: 12px; background: #0f172a; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline;">
+                    <span style="font-weight: 600;">Разом до сплати:</span>
+                    <span id="orderTotalPrice" style="font-size: 20px; font-weight: 800; color: var(--cyan);">-</span>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button type="button" onclick="closeOrderModal()">Скасувати</button>
+                    <button type="submit" class="btn-buy">Підтвердити та оформити</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальне вікно редагування товару -->
     <div id="editItemModal" class="modal-overlay">
         <div class="modal-content">
             <div class="card-title">
-                <span>Редагування товару (З перевіркою IDOR)</span>
+                <span>Редагування модифікації (Перевірка прав IDOR)</span>
                 <button type="button" class="btn-sm" onclick="closeEditModal()">Закрити</button>
             </div>
             <div id="editItemAlert" style="display: none;"></div>
@@ -855,15 +1207,15 @@
                     <input type="text" id="editItemTitle" required>
                 </div>
                 <div class="form-group">
-                    <label for="editItemPrice">Ціна (кредитів)</label>
+                    <label for="editItemPrice">Ціна (кредитів CR)</label>
                     <input type="number" id="editItemPrice" step="0.01" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="editItemStock">Залишок (Stock Quantity)</label>
+                    <label for="editItemStock">Залишок на складі</label>
                     <input type="number" id="editItemStock" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="editItemSpecs">Специфікації (JSON specs)</label>
+                    <label for="editItemSpecs">Специфікації (JSON)</label>
                     <textarea id="editItemSpecs" rows="3" style="font-family: monospace;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
@@ -879,7 +1231,27 @@
         let currentUser = null;
         let catalogItems = [];
         let httpLogs = [];
+        let currentOrderItem = null;
 
+        // --- Система Toast сповіщень ---
+        function showToast(message, type = "info") {
+            const container = document.getElementById("toastContainer");
+            if (!container) return;
+
+            const toast = document.createElement("div");
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(40px)";
+                setTimeout(() => toast.remove(), 250);
+            }, 4000);
+        }
+
+        // --- HTTP Клієнт з відстеженням кластера ---
         async function apiRequest(endpoint, method = "GET", body = null, requireAuth = true) {
             const headers = { "Content-Type": "application/json" };
             if (requireAuth && authToken) {
@@ -889,7 +1261,7 @@
             const startTime = performance.now();
             let responseStatus = 0;
             let responseData = null;
-            let errorOccurred = null;
+            let instanceId = null;
 
             try {
                 const options = { method, headers };
@@ -899,6 +1271,11 @@
 
                 const res = await fetch(endpoint, options);
                 responseStatus = res.status;
+                instanceId = res.headers.get("X-Instance-ID");
+
+                if (instanceId) {
+                    document.getElementById("clusterNodeId").textContent = instanceId;
+                }
 
                 if (responseStatus === 204) {
                     responseData = { status: "deleted_no_content" };
@@ -906,12 +1283,12 @@
                     responseData = await res.json().catch(() => ({ status: "invalid_json" }));
                 }
 
-                return { ok: res.ok, status: responseStatus, data: responseData };
+                return { ok: res.ok, status: responseStatus, data: responseData, instanceId };
             } catch (err) {
-                errorOccurred = err.message;
-                return { ok: false, status: 0, data: { detail: err.message } };
+                return { ok: false, status: 0, data: { detail: err.message }, instanceId: null };
             } finally {
                 const latency = Math.round(performance.now() - startTime);
+                document.getElementById("clusterPing").textContent = `(${latency} ms)`;
                 logHttpRequest(method, endpoint, responseStatus, latency, body, responseData);
             }
         }
@@ -935,22 +1312,21 @@
             const container = document.getElementById("httpLogsContainer");
             if (!container) return;
             if (httpLogs.length === 0) {
-                container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">Логи запитів порожні.</div>';
+                container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">Журнал запитів порожній.</div>';
                 return;
             }
 
             container.innerHTML = httpLogs.map(log => {
                 let statusClass = "status-4xx";
                 if (log.status >= 200 && log.status < 300) statusClass = "status-2xx";
-                else if (log.status === 401) statusClass = "status-401";
-                else if (log.status === 403) statusClass = "status-403";
+                else if (log.status >= 500) statusClass = "status-5xx";
 
                 return `
                     <div class="http-log-entry">
                         <div>
                             <span class="http-status-pill ${statusClass}">[${log.status || 'ERR'}]</span>
                             <strong>${log.method}</strong> ${log.url}
-                            <span style="color: var(--text-muted); margin-left: 10px;">${log.latency}ms</span>
+                            <span style="color: var(--text-muted); margin-left: 10px;">${log.latency} ms</span>
                             <span style="color: var(--text-muted); float: right;">${log.timestamp}</span>
                         </div>
                         <pre style="margin-top: 6px; color: #a5f3fc; overflow-x: auto; max-height: 120px;">${JSON.stringify(log.responseData, null, 2)}</pre>
@@ -962,8 +1338,10 @@
         function clearHttpLog() {
             httpLogs = [];
             renderHttpLogs();
+            showToast("Журнал запитів очищено", "info");
         }
 
+        // --- Керування вкладками ---
         function switchTab(tabId) {
             document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
             document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
@@ -977,20 +1355,23 @@
             if (targetPane) targetPane.classList.add("active");
 
             if (tabId === "catalogTab") loadCatalog();
+            else if (tabId === "ordersTab") loadOrders();
             else if (tabId === "vendorTab") loadVendorPortal();
             else if (tabId === "adminTab") loadAdminDashboard();
             else if (tabId === "profileTab") loadProfile();
         }
 
+        // --- Авторизація та користувачі ---
         async function quickLogin(username, password) {
             const res = await apiRequest("/api/v1/auth/login", "POST", { username, password }, false);
             if (res.ok) {
                 authToken = res.data.access_token;
                 localStorage.setItem("runedrive_token", authToken);
                 await initUser();
+                showToast(`Вхід виконано успішно: ${username}`, "success");
                 switchTab("catalogTab");
             } else {
-                alert("Помилка швидкого входу: " + (res.data.detail || "Невірні дані"));
+                showToast("Помилка швидкого входу: " + (res.data.detail || "Невірні дані"), "error");
             }
         }
 
@@ -1013,6 +1394,7 @@
             authToken = res.data.access_token;
             localStorage.setItem("runedrive_token", authToken);
             await initUser();
+            showToast(`Ласкаво просимо, ${username}!`, "success");
             switchTab("catalogTab");
         }
 
@@ -1035,10 +1417,11 @@
             }
 
             alertBox.className = "banner banner-success";
-            alertBox.textContent = "Акаунт успішно зареєстровано! Тепер увійдіть у систему.";
+            alertBox.textContent = "Обліковий запис успішно зареєстровано! Увійдіть під своїми даними.";
             alertBox.style.display = "block";
             document.getElementById("loginUsername").value = username;
             document.getElementById("loginPassword").value = password;
+            showToast("Реєстрація успішна!", "success");
         }
 
         function logout() {
@@ -1046,7 +1429,8 @@
             currentUser = null;
             localStorage.removeItem("runedrive_token");
             updateUserUI();
-            switchTab("authTab");
+            showToast("Ви вийшли з облікового запису", "info");
+            switchTab("catalogTab");
         }
 
         async function initUser() {
@@ -1078,7 +1462,7 @@
                     currentUser.role === "ADMIN" ? "role-admin" :
                     currentUser.role === "RIPPERDOC" ? "role-ripperdoc" : "role-buyer"
                 );
-                logoutBtn.style.display = "inline-block";
+                logoutBtn.style.display = "inline-flex";
             } else {
                 nameSpan.textContent = "Не авторизовано";
                 roleBadge.textContent = "ГІСТЬ";
@@ -1087,9 +1471,8 @@
             }
         }
 
+        // --- Каталог товарів ---
         async function loadCatalog() {
-            const grid = document.getElementById("itemsGrid");
-            const countLbl = document.getElementById("catalogCount");
             const alertBox = document.getElementById("catalogAlert");
             alertBox.style.display = "none";
 
@@ -1117,55 +1500,68 @@
                 return matchName && matchCat;
             });
 
-            countLbl.textContent = `Знайдено: ${filtered.length} із ${catalogItems.length}`;
+            countLbl.textContent = `Знайдено позицій: ${filtered.length} із ${catalogItems.length}`;
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 24px;">Товарів не знайдено за заданими критеріями.</div>';
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 32px;">Товарів не знайдено за заданими критеріями пошуку.</div>';
                 return;
             }
 
             grid.innerHTML = filtered.map(item => {
                 const isOwner = currentUser && item.owner_id === currentUser.id;
                 const isAdmin = currentUser && currentUser.role === "ADMIN";
-                const isRipperdoc = currentUser && currentUser.role === "RIPPERDOC";
                 const canModify = isOwner || isAdmin;
 
-                const specsPretty = item.specs && Object.keys(item.specs).length > 0
-                    ? JSON.stringify(item.specs, null, 1).replace(/[\{\}\"]/g, '')
-                    : 'Без специфікацій';
-
-                let ownerLabel = item.owner_id ? `Власник: ${item.owner_id.slice(0, 8)}...` : 'Анонімний товар';
-                let ownerBadgeClass = 'owner-other';
-                if (isOwner) {
-                    ownerLabel = 'Ваш товар (Власник)';
-                    ownerBadgeClass = 'owner-me';
+                let stockClass = "stock-available";
+                let stockText = `${item.stock_quantity} шт в наявності`;
+                if (item.stock_quantity === 0) {
+                    stockClass = "stock-empty";
+                    stockText = "Немає в наявності";
+                } else if (item.stock_quantity < 5) {
+                    stockClass = "stock-low";
+                    stockText = `Залишилось лише ${item.stock_quantity} шт`;
                 }
+
+                let specsHtml = "";
+                if (item.specs && Object.keys(item.specs).length > 0) {
+                    specsHtml = Object.entries(item.specs).map(([k, v]) =>
+                        `<span class="spec-chip">${escapeHtml(k)}: <strong>${escapeHtml(v)}</strong></span>`
+                    ).join("");
+                } else {
+                    specsHtml = '<span style="font-size: 11px; color: var(--text-muted);">Базові специфікації виробника</span>';
+                }
+
+                let ownerText = isOwner ? "Ваша позиція (Власник)" : (item.owner_id ? `Вендор: ${item.owner_id.slice(0, 8)}...` : "Анонімний вендор");
 
                 return `
                     <div class="item-card">
                         <div>
-                            <div class="item-header">
+                            <div class="item-top-row">
                                 <span class="item-title">${escapeHtml(item.title)}</span>
-                                <span class="item-cat-badge">${item.category}</span>
+                                <span class="category-badge cat-${item.category}">${item.category}</span>
                             </div>
-                            <div class="item-price">${Number(item.price).toFixed(2)} CR</div>
-                            <div class="item-meta">
-                                Залишок: <strong>${item.stock_quantity} шт</strong> | Slug: <code>${item.slug}</code>
-                                <br>
-                                <span class="owner-tag ${ownerBadgeClass}">${ownerLabel}</span>
+
+                            <div class="item-price-row">
+                                <span class="item-price">${Number(item.price).toFixed(2)} CR</span>
+                                <span class="stock-tag ${stockClass}">${stockText}</span>
                             </div>
-                            <div class="item-specs">${escapeHtml(specsPretty)}</div>
+
+                            <div class="specs-chips">
+                                ${specsHtml}
+                            </div>
+
+                            <div class="owner-info">${ownerText}</div>
                         </div>
 
                         <div class="item-actions">
-                            <button type="button" class="btn-sm" onclick="showItemDetails('${item.id}')">Деталі</button>
+                            <button type="button" class="btn-sm btn-buy" onclick="openOrderModal('${item.id}')" ${item.stock_quantity === 0 ? 'disabled style="opacity: 0.5;"' : ''}>Оформити замовлення</button>
+                            <button type="button" class="btn-sm" onclick="showItemDetails('${item.id}')">Параметри</button>
 
                             ${canModify ? `
                                 <button type="button" class="btn-sm btn-warning" onclick="openEditModal('${item.id}')">Редагувати</button>
                                 <button type="button" class="btn-sm btn-danger" onclick="deleteItem('${item.id}')">Видалити</button>
                             ` : `
-                                <button type="button" class="btn-sm btn-primary" onclick="simulateBuy('${item.title}', ${item.price})">Придбати</button>
-                                <button type="button" class="btn-sm" style="border-color: #581c24; color: #f87171;" onclick="testIdorOnItem('${item.id}')">Тест IDOR</button>
+                                <button type="button" class="btn-sm" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);" onclick="testIdorOnItem('${item.id}')">Тест IDOR</button>
                             `}
                         </div>
                     </div>
@@ -1173,21 +1569,143 @@
             }).join("");
         }
 
-        function simulateBuy(title, price) {
+        // --- Оформлення та перегляд замовлень (Лабораторна №1) ---
+        function openOrderModal(itemId) {
             if (!currentUser) {
-                alert("Для здійснення замовлення увійдіть під роллю BUYER (наприклад, street_samurai).");
+                showToast("Для оформлення замовлення увійдіть як BUYER (наприклад, street_samurai)", "warning");
                 switchTab("authTab");
                 return;
             }
-            alert(`[Успішно] Оформлено тестове замовлення на «${title}» за ${price} CR!`);
+
+            const item = catalogItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            currentOrderItem = item;
+            document.getElementById("orderItemId").value = item.id;
+            document.getElementById("orderItemTitle").textContent = item.title;
+            document.getElementById("orderItemUnitPrice").textContent = `${Number(item.price).toFixed(2)} CR`;
+            document.getElementById("orderItemAvailableStock").textContent = `${item.stock_quantity} шт`;
+            document.getElementById("orderQuantity").value = 1;
+            document.getElementById("orderQuantity").max = item.stock_quantity;
+            document.getElementById("orderModalAlert").style.display = "none";
+
+            recalcOrderTotal();
+            document.getElementById("orderModal").style.display = "flex";
         }
 
+        function closeOrderModal() {
+            document.getElementById("orderModal").style.display = "none";
+            currentOrderItem = null;
+        }
+
+        function recalcOrderTotal() {
+            if (!currentOrderItem) return;
+            const qty = parseInt(document.getElementById("orderQuantity").value, 10) || 1;
+            const total = qty * Number(currentOrderItem.price);
+            document.getElementById("orderTotalPrice").textContent = `${total.toFixed(2)} CR`;
+        }
+
+        async function handleConfirmOrder(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById("orderModalAlert");
+            alertBox.style.display = "none";
+
+            const itemId = document.getElementById("orderItemId").value;
+            const quantity = parseInt(document.getElementById("orderQuantity").value, 10);
+            const delivery_point = document.getElementById("orderDeliveryPoint").value.trim();
+
+            const payload = {
+                items: [{ item_id: itemId, quantity }],
+                delivery_point
+            };
+
+            const res = await apiRequest("/api/v1/orders", "POST", payload, true);
+
+            if (res.ok) {
+                closeOrderModal();
+                showToast(`Замовлення #${res.data.id.slice(0, 8)} успішно створено! Сума: ${res.data.total_price} CR`, "success");
+                loadCatalog();
+                switchTab("ordersTab");
+            } else {
+                alertBox.className = "banner banner-danger";
+                alertBox.textContent = `Помилка створення замовлення (${res.status}): ${res.data.detail || "Не вдалося провести транзакцію"}`;
+                alertBox.style.display = "block";
+            }
+        }
+
+        async function loadOrders() {
+            const notice = document.getElementById("ordersNotice");
+            const grid = document.getElementById("ordersGrid");
+
+            if (!authToken) {
+                notice.className = "banner banner-warning";
+                notice.textContent = "Увійдіть у систему, щоб переглянути історію своїх замовлень.";
+                notice.style.display = "block";
+                grid.innerHTML = "";
+                return;
+            }
+
+            notice.style.display = "none";
+            const res = await apiRequest("/api/v1/orders", "GET", null, true);
+
+            if (!res.ok) {
+                notice.className = "banner banner-danger";
+                notice.textContent = "Не вдалося отримати замовлення: " + (res.data.detail || res.status);
+                notice.style.display = "block";
+                return;
+            }
+
+            const orders = res.data;
+            if (orders.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 36px;">У вас ще немає оформлених замовлень. Перейдіть до каталогу для покупки модифікацій.</div>';
+                return;
+            }
+
+            grid.innerHTML = orders.map(ord => {
+                const dateStr = new Date(ord.created_at).toLocaleString("uk-UA");
+                const itemsHtml = ord.items.map(it => `
+                    <div class="order-item-row">
+                        <span>Товар ID: <code>${it.item_id.slice(0, 8)}...</code></span>
+                        <span>${it.quantity} шт × ${Number(it.unit_price).toFixed(2)} CR</span>
+                    </div>
+                `).join("");
+
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <span class="order-id">#${ord.id.slice(0, 8)}</span>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${dateStr}</div>
+                            </div>
+                            <span class="order-status status-${ord.status}">${ord.status}</span>
+                        </div>
+
+                        <div class="order-meta-row">
+                            <span>Точка доставки:</span>
+                            <strong style="color: var(--text-secondary);">${escapeHtml(ord.delivery_point)}</strong>
+                        </div>
+
+                        <div class="order-meta-row">
+                            <span>Загальна сума:</span>
+                            <strong style="color: var(--cyan); font-size: 15px;">${Number(ord.total_price).toFixed(2)} CR</strong>
+                        </div>
+
+                        <div class="order-items-list">
+                            ${itemsHtml}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // --- Додаткові дії з товарами (Створення, Редагування, IDOR) ---
         async function showItemDetails(itemId) {
             const res = await apiRequest(`/api/v1/items/${itemId}`, "GET", null, false);
             if (res.ok) {
-                alert(`Деталі модифікації [${res.data.title}]:\n\nUUID: ${res.data.id}\nКатегорія: ${res.data.category}\nЦіна: ${res.data.price} CR\nЗалишок: ${res.data.stock_quantity}\nВласник (Vendor ID): ${res.data.owner_id}\nСпецифікації: ${JSON.stringify(res.data.specs)}`);
+                const it = res.data;
+                showToast(`Товар [${it.title}]: ${it.price} CR, на складі: ${it.stock_quantity} шт`, "info");
             } else {
-                alert("Помилка отримання товару: " + (res.data.detail || res.status));
+                showToast("Помилка завантаження товару: " + (res.data.detail || res.status), "error");
             }
         }
 
@@ -1198,7 +1716,7 @@
 
             if (!authToken) {
                 alertBox.className = "banner banner-danger";
-                alertBox.textContent = "401 Unauthorized: Спочатку увійдіть у систему під роллю RIPPERDOC або ADMIN.";
+                alertBox.textContent = "401 Unauthorized: Спочатку увійдіть під роллю RIPPERDOC або ADMIN.";
                 alertBox.style.display = "block";
                 return;
             }
@@ -1216,7 +1734,7 @@
                     specs = JSON.parse(specsRaw);
                 } catch (err) {
                     alertBox.className = "banner banner-danger";
-                    alertBox.textContent = "Помилка валідації JSON у полі специфікацій: " + err.message;
+                    alertBox.textContent = "Помилка формату JSON у полі характеристик: " + err.message;
                     alertBox.style.display = "block";
                     return;
                 }
@@ -1226,18 +1744,13 @@
             const res = await apiRequest("/api/v1/items/", "POST", payload, true);
 
             if (res.ok) {
-                alertBox.className = "banner banner-success";
-                alertBox.textContent = `201 Created: Товар «${title}» успішно створено та закріплено за вашим Vendor ID!`;
-                alertBox.style.display = "block";
+                showToast(`Товар «${title}» успішно додано до каталогу!`, "success");
                 document.getElementById("createItemForm").reset();
                 loadCatalog();
+                switchTab("catalogTab");
             } else {
                 alertBox.className = "banner banner-danger";
-                if (res.status === 403) {
-                    alertBox.textContent = `403 Forbidden (RBAC Захист): ${res.data.detail || "Користувачам із роллю BUYER заборонено створювати товари у каталозі!"}`;
-                } else {
-                    alertBox.textContent = `Помилка ${res.status}: ${res.data.detail || "Не вдалося створити товар"}`;
-                }
+                alertBox.textContent = `Помилка ${res.status}: ${res.data.detail || "Не вдалося створити товар"}`;
                 alertBox.style.display = "block";
             }
         }
@@ -1288,7 +1801,7 @@
             if (res.ok) {
                 closeEditModal();
                 loadCatalog();
-                alert(`Товар «${title}» успішно оновлено!`);
+                showToast(`Товар «${title}» успішно оновлено!`, "success");
             } else {
                 alertBox.className = "banner banner-danger";
                 alertBox.textContent = `Помилка ${res.status}: ${res.data.detail || "Не вдалося оновити"}`;
@@ -1297,14 +1810,14 @@
         }
 
         async function deleteItem(itemId) {
-            if (!confirm("Ви впевнені, що бажаєте видалити цей товар?")) return;
+            if (!confirm("Ви впевнені, що бажаєте видалити цю модифікацію з каталогу?")) return;
 
             const res = await apiRequest(`/api/v1/items/${itemId}`, "DELETE", null, true);
             if (res.ok) {
-                alert("Товар успішно видалено!");
+                showToast("Товар успішно видалено з каталогу", "success");
                 loadCatalog();
             } else {
-                alert(`Помилка видалення (${res.status}): ${res.data.detail || "Доступ заборонено"}`);
+                showToast(`Помилка видалення (${res.status}): ${res.data.detail || "Доступ заборонено"}`, "error");
             }
         }
 
@@ -1313,7 +1826,7 @@
             const itemTitle = item ? item.title : itemId;
 
             if (!authToken) {
-                alert("Спочатку авторизуйтесь під будь-яким акаунтом (наприклад, BUYER або іншим продавцем).");
+                showToast("Спочатку авторизуйтесь під будь-яким акаунтом (наприклад, BUYER)", "warning");
                 return;
             }
 
@@ -1321,22 +1834,23 @@
             const res = await apiRequest(`/api/v1/items/${itemId}`, "PATCH", fakeUpdate, true);
 
             if (res.status === 403) {
-                alert(`[403 FORBIDDEN - IDOR ЗАХИСТ СПРАЦЮВАВ!]\n\nСервер відхилив зміну ціни чужого товару «${itemTitle}»:\n${res.data.detail}\n\nКористувач не є власником товару і не є адміністратором.`);
+                showToast(`[403 FORBIDDEN] Захист IDOR спрацював: зміну чужого товару «${itemTitle}» заблоковано!`, "success");
             } else if (res.ok) {
-                alert(`Увага: Запит пройшов зі статусом 200 OK (ви є власником або ADMIN).`);
+                showToast("Увага: Запит пройшов зі статусом 200 OK (ви є власником або ADMIN).", "info");
                 loadCatalog();
             } else {
-                alert(`Відповідь сервера (${res.status}): ${res.data.detail}`);
+                showToast(`Відповідь сервера (${res.status}): ${res.data.detail}`, "error");
             }
         }
 
+        // --- Кабінет ріппердока та адмін-панель ---
         async function loadVendorPortal() {
             const banner = document.getElementById("vendorPortalBanner");
             const content = document.getElementById("vendorPortalContent");
 
             if (!authToken) {
                 banner.className = "banner banner-warning";
-                banner.textContent = "401 Unauthorized: Будь ласка, увійдіть у систему під роллю RIPPERDOC або ADMIN.";
+                banner.textContent = "401 Unauthorized: Увійдіть під роллю RIPPERDOC або ADMIN.";
                 banner.style.display = "block";
                 content.style.display = "none";
                 return;
@@ -1352,7 +1866,7 @@
             } else {
                 content.style.display = "none";
                 banner.className = "banner banner-danger";
-                banner.innerHTML = `<strong>Помилка доступу (${res.status}):</strong> ${res.data.detail || "Доступ до кабінету продавця дозволено виключно ролям RIPPERDOC та ADMIN (вертикальний RBAC захист)."}`;
+                banner.innerHTML = `<strong>Відхилено (${res.status}):</strong> ${res.data.detail || "Доступ дозволено виключно продавцям (роль RIPPERDOC) та адміністраторам."}`;
                 banner.style.display = "block";
             }
         }
@@ -1363,7 +1877,7 @@
 
             if (!authToken) {
                 banner.className = "banner banner-warning";
-                banner.textContent = "401 Unauthorized: Будь ласка, увійдіть у систему під роллю ADMIN.";
+                banner.textContent = "401 Unauthorized: Увійдіть під роллю ADMIN.";
                 banner.style.display = "block";
                 content.style.display = "none";
                 return;
@@ -1380,18 +1894,19 @@
             } else {
                 content.style.display = "none";
                 banner.className = "banner banner-danger";
-                banner.innerHTML = `<strong>Відхилено контролем доступу (${res.status} Forbidden):</strong> ${res.data.detail || "Доступ до командного центру заборонено всім ролям, окрім ADMIN (вертикальний RBAC захист)."}`;
+                banner.innerHTML = `<strong>Відхилено контролем доступу (${res.status} Forbidden):</strong> ${res.data.detail || "Доступ дозволено виключно ролі ADMIN."}`;
                 banner.style.display = "block";
             }
         }
 
+        // --- Профіль та IDOR тест користувача ---
         async function loadProfile() {
             const alertBox = document.getElementById("profileAlert");
             alertBox.style.display = "none";
 
             if (!currentUser) {
                 alertBox.className = "banner banner-warning";
-                alertBox.textContent = "401 Unauthorized: Увійдіть у систему для перегляду та редагування свого профілю.";
+                alertBox.textContent = "401 Unauthorized: Увійдіть у систему для перегляду власного профілю.";
                 alertBox.style.display = "block";
                 document.getElementById("profileDetails").style.display = "none";
                 return;
@@ -1424,9 +1939,7 @@
 
             const res = await apiRequest(`/api/v1/users/${currentUser.id}`, "PATCH", payload, true);
             if (res.ok) {
-                alertBox.className = "banner banner-success";
-                alertBox.textContent = "200 OK: Ваш профіль успішно оновлено!";
-                alertBox.style.display = "block";
+                showToast("Ваш профіль успішно оновлено!", "success");
                 await initUser();
             } else {
                 alertBox.className = "banner banner-danger";
@@ -1441,7 +1954,7 @@
             alertBox.style.display = "none";
 
             if (!currentUser) {
-                alert("Спочатку увійдіть під будь-яким акаунтом (наприклад, BUYER).");
+                showToast("Спочатку авторизуйтесь під будь-яким акаунтом", "warning");
                 return;
             }
 
@@ -1452,6 +1965,7 @@
                 alertBox.className = "banner banner-danger";
                 alertBox.innerHTML = `<strong>[403 FORBIDDEN - IDOR ЗАХИСТ СПРАЦЮВАВ]</strong><br>Сервер заблокував спробу модифікації чужого профілю (Target UUID: <code>${targetUuid}</code>):<br><em>${res.data.detail}</em>`;
                 alertBox.style.display = "block";
+                showToast("IDOR спробу успішно заблоковано сервером (403 Forbidden)", "success");
             } else if (res.ok) {
                 alertBox.className = "banner banner-warning";
                 alertBox.textContent = `200 OK: Профіль змінено (ви авторизовані як ADMIN, якому дозволено адміністрування користувачів).`;
