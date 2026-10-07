@@ -22,9 +22,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # =========================================================================
-  # 1. СТАТИЧНИЙ АНАЛІЗ КОДУ (LINTING & SAST)
-  # =========================================================================
   lint:
     name: Code Quality & Linting (Ruff)
     runs-on: ubuntu-latest
@@ -51,9 +48,6 @@ jobs:
         run: |
           ruff format --check .
 
-  # =========================================================================
-  # 2. ЗБІРКА ТА ТЕСТУВАННЯ (BUILD & TEST)
-  # =========================================================================
   test:
     name: Unit & Integration Tests (Pytest)
     runs-on: ubuntu-latest
@@ -78,9 +72,6 @@ jobs:
         run: |
           pytest tests/ -v
 
-  # =========================================================================
-  # 3. ЗБІРКА КОНТЕЙНЕРА ТА СЕК'ЮРІТІ АУДИТ (DOCKER BUILD & TRIVY SCAN)
-  # =========================================================================
   docker-build-scan:
     name: Docker Build & Vulnerability Scan (Trivy)
     runs-on: ubuntu-latest
@@ -113,10 +104,6 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-  # =========================================================================
-  # 4. ПУБЛІКАЦІЯ ОБРАЗУ В РЕЄСТРІ (GHCR.IO)
-  # Тільки для push у робочі гілки (не для Pull Request)
-  # =========================================================================
   docker-publish:
     name: Publish Container Image to GHCR
     runs-on: ubuntu-latest
