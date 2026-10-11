@@ -30,3 +30,9 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+benchmarks/
+*.csv
+
+# Local hidden cheatsheets & notes
+.docker_cheatsheet.md
+.cheat*

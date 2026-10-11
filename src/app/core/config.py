@@ -1,7 +1,22 @@
+import os
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def get_env_file() -> str:
+    """Визначає цільовий файл оточення залежно від змінної APP_ENV / ENVIRONMENT."""
+    env = os.getenv("APP_ENV", os.getenv("ENVIRONMENT", "sandbox")).lower()
+    if env in ("production", "prod"):
+        return ".env.production"
+    if env in ("sandbox", "dev", "development"):
+        return ".env.sandbox"
+    return ".env"
+
+
 class Settings(BaseSettings):
+    ENVIRONMENT: str = "sandbox"
+    DEBUG: bool = True
+
     PROJECT_NAME: str = "RuneDrive API"
     VERSION: str = "0.1.0"
     DESCRIPTION: str = "Highload Marketplace for Cybernetic and Magical Modifications"
@@ -11,7 +26,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "runedrive_lab2"
+    POSTGRES_DB: str = "runedrive"
 
     DATABASE_URL: str | None = None
 
@@ -25,16 +40,17 @@ class Settings(BaseSettings):
         )
 
     REDIS_HOST: str = "localhost"
-    REDIS_PORT: int = 6380
+    REDIS_PORT: int = 6379
 
-    JWT_SECRET_KEY: str = "rune_super_secret_cyber_jwt_key_2026_lab2"
+    JWT_SECRET_KEY: str = "rune_super_secret_cyber_jwt_key_2026_master"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=get_env_file(),
         env_file_encoding="utf-8",
         case_sensitive=True,
+        extra="ignore",
     )
 
 
