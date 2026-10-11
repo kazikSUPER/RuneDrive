@@ -3,8 +3,8 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Numeric, String, Uuid
 from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import ForeignKey, Numeric, String, Uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -50,7 +50,10 @@ class Order(Base, TimestampMixin):
 
     user: Mapped["User"] = relationship("User", back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship(
-        "OrderItem", back_populates="order", cascade="all, delete-orphan", lazy="selectin"
+        "OrderItem",
+        back_populates="order",
+        cascade="all, delete-orphan",
+        lazy="selectin",
     )
 
 

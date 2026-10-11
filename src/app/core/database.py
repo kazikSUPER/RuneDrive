@@ -14,6 +14,9 @@ engine = create_async_engine(
     echo=False,
     future=True,
     pool_pre_ping=True,
+    pool_size=20,
+    max_overflow=30,
+    pool_timeout=10,
 )
 
 AsyncSessionLocal = async_sessionmaker(

@@ -52,7 +52,6 @@ async def create_order(
                 detail=f"Недостатньо залишку товару '{item.title}' (наявно: {item.stock_quantity}, запитано: {item_req.quantity})",
             )
 
-        # Списання залишку зі складу
         item.stock_quantity -= item_req.quantity
         line_total = item.price * item_req.quantity
         total_amount += line_total
@@ -165,7 +164,6 @@ async def cancel_order(
 
     order.status = OrderStatus.CANCELLED
 
-    # Повернення залишків товару на склад
     for oi in order.items:
         res = await db.execute(select(Item).where(Item.id == oi.item_id))
         item = res.scalar_one_or_none()
