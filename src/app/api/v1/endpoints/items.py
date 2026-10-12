@@ -1,12 +1,18 @@
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_active_user, require_roles
 from app.core.database import get_db
+from app.core.redis import (
+    delete_cache,
+    delete_cache_pattern,
+    get_cache_json,
+    set_cache_json,
+)
 from app.models.item import Item
 from app.models.user import User, UserRole
 from app.schemas.item import ItemCreate, ItemResponse, ItemUpdate
@@ -21,11 +27,24 @@ router = APIRouter()
 )
 async def get_items(
     db: Annotated[AsyncSession, Depends(get_db)],
+    response: Response,
     skip: int = 0,
     limit: int = 20,
-) -> list[Item]:
+) -> list[Item] | list[dict]:
+    cache_key = f"items:catalog:skip_{skip}:limit_{limit}"
+    cached = await get_cache_json(cache_key)
+    if cached is not None:
+        response.headers["X-Cache"] = "HIT"
+        return cached
+
     result = await db.execute(select(Item).offset(skip).limit(limit))
-    return list(result.scalars().all())
+    items = list(result.scalars().all())
+    serialized = [
+        ItemResponse.model_validate(it).model_dump(mode="json") for it in items
+    ]
+    await set_cache_json(cache_key, serialized, ttl=120)
+    response.headers["X-Cache"] = "MISS"
+    return items
 
 
 @router.post(
@@ -54,6 +73,10 @@ async def create_item(
     db.add(item)
     await db.commit()
     await db.refresh(item)
+
+    # Інвалідація списків каталогу в Redis
+    await delete_cache_pattern("items:catalog:*")
+
     return item
 
 
@@ -65,13 +88,24 @@ async def create_item(
 async def get_item(
     item_id: uuid.UUID,
     db: Annotated[AsyncSession, Depends(get_db)],
-) -> Item:
+    response: Response,
+) -> Item | dict:
+    cache_key = f"items:detail:{item_id}"
+    cached = await get_cache_json(cache_key)
+    if cached is not None:
+        response.headers["X-Cache"] = "HIT"
+        return cached
+
     item = await db.get(Item, item_id)
     if not item:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Item not found",
         )
+
+    serialized = ItemResponse.model_validate(item).model_dump(mode="json")
+    await set_cache_json(cache_key, serialized, ttl=300)
+    response.headers["X-Cache"] = "MISS"
     return item
 
 
@@ -114,6 +148,11 @@ async def update_item(
 
     await db.commit()
     await db.refresh(item)
+
+    # Інвалідація детального кешу товару та списків каталогу
+    await delete_cache(f"items:detail:{item_id}")
+    await delete_cache_pattern("items:catalog:*")
+
     return item
 
 
@@ -146,3 +185,7 @@ async def delete_item(
 
     await db.delete(item)
     await db.commit()
+
+    # Інвалідація детального кешу товару та списків каталогу
+    await delete_cache(f"items:detail:{item_id}")
+    await delete_cache_pattern("items:catalog:*")

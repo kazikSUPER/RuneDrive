@@ -69,7 +69,9 @@ async def seed_initial_data():
                 ]
                 session.add_all(prod_items)
                 await session.commit()
-                print(f"[*] Production catalog initialized: {len(prod_items)} cyber/arcane items seeded.")
+                print(
+                    f"[*] Production catalog initialized: {len(prod_items)} cyber/arcane items seeded."
+                )
             else:
                 item1 = Item(
                     title="Очний імплант «Кіроші Mk.3»",

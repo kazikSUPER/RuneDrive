@@ -14,3 +14,4 @@ email-validator>=2.2.0
 python-multipart>=0.0.12
 
 locust
+redis>=5.0.0

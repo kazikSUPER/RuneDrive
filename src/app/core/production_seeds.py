@@ -11,7 +11,12 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("1500.00"),
         "stock_quantity": 25,
-        "specs": {"zoom": "8x", "scan_speed": "0.15s", "thermal_vision": "true", "interface": "NeuralLink 3.0"},
+        "specs": {
+            "zoom": "8x",
+            "scan_speed": "0.15s",
+            "thermal_vision": "true",
+            "interface": "NeuralLink 3.0",
+        },
     },
     {
         "title": "Операційна система «Сандевістан Мілітех Апогей»",
@@ -19,7 +24,12 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("9800.00"),
         "stock_quantity": 8,
-        "specs": {"time_dilation": "85%", "duration": "16s", "cooldown": "25s", "neural_strain": "medium"},
+        "specs": {
+            "time_dilation": "85%",
+            "duration": "16s",
+            "cooldown": "25s",
+            "neural_strain": "medium",
+        },
     },
     {
         "title": "Підшкірна броня «Титан-Платина 4G»",
@@ -27,7 +37,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("4200.00"),
         "stock_quantity": 15,
-        "specs": {"armor_rating": "+240", "kinetic_absorption": "35%", "weight": "4.2kg"},
+        "specs": {
+            "armor_rating": "+240",
+            "kinetic_absorption": "35%",
+            "weight": "4.2kg",
+        },
     },
     {
         "title": "Біомонітор «Траума Тім Преміум»",
@@ -35,7 +49,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("3100.00"),
         "stock_quantity": 20,
-        "specs": {"auto_heal_threshold": "20%", "stim_slots": "3", "trauma_beacon": "enabled"},
+        "specs": {
+            "auto_heal_threshold": "20%",
+            "stim_slots": "3",
+            "trauma_beacon": "enabled",
+        },
     },
     {
         "title": "Моноструна «Арасака Термал-Фокус»",
@@ -43,7 +61,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("5400.00"),
         "stock_quantity": 12,
-        "specs": {"wire_length": "4.5m", "thermal_damage": "320 dps", "quickhack_upload": "true"},
+        "specs": {
+            "wire_length": "4.5m",
+            "thermal_damage": "320 dps",
+            "quickhack_upload": "true",
+        },
     },
     {
         "title": "Клинки богомола «Цунамі Нео-Блейд»",
@@ -51,7 +73,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("6200.00"),
         "stock_quantity": 10,
-        "specs": {"blade_material": "Carbo-Glass", "leap_range": "8m", "bleed_chance": "45%"},
+        "specs": {
+            "blade_material": "Carbo-Glass",
+            "leap_range": "8m",
+            "bleed_chance": "45%",
+        },
     },
     {
         "title": "Нейропроцесор «Квантовий Синапс X-1»",
@@ -67,7 +93,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("2800.00"),
         "stock_quantity": 18,
-        "specs": {"stamina_regen": "+40%", "toxin_immunity": "60%", "oxygen_storage": "45min"},
+        "specs": {
+            "stamina_regen": "+40%",
+            "toxin_immunity": "60%",
+            "oxygen_storage": "45min",
+        },
     },
     {
         "title": "Посилені сухожилля «Фортіс Джамп Mk.2»",
@@ -75,7 +105,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("3600.00"),
         "stock_quantity": 22,
-        "specs": {"double_jump": "true", "fall_damage_reduction": "75%", "shock_absorbers": "hydraulic"},
+        "specs": {
+            "double_jump": "true",
+            "fall_damage_reduction": "75%",
+            "shock_absorbers": "hydraulic",
+        },
     },
     {
         "title": "Оптичний камуфляж «Фантом Нічного Міста»",
@@ -83,7 +117,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("8400.00"),
         "stock_quantity": 5,
-        "specs": {"invisibility_duration": "14s", "light_refraction": "98.5%", "sensor_scramble": "true"},
+        "specs": {
+            "invisibility_duration": "14s",
+            "light_refraction": "98.5%",
+            "sensor_scramble": "true",
+        },
     },
     {
         "title": "Друге серце «БіоРекуператор Екстра»",
@@ -91,7 +129,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("11500.00"),
         "stock_quantity": 4,
-        "specs": {"revive_hp": "100%", "defibrillator_delay": "0.1s", "cooldown": "120s"},
+        "specs": {
+            "revive_hp": "100%",
+            "defibrillator_delay": "0.1s",
+            "cooldown": "120s",
+        },
     },
     {
         "title": "Кардіостимулятор «Вольтаїк Кор»",
@@ -99,9 +141,12 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.IMPLANT,
         "price": Decimal("2900.00"),
         "stock_quantity": 14,
-        "specs": {"emp_resistance": "80%", "adrenaline_boost": "+20%", "battery_life": "10yr"},
+        "specs": {
+            "emp_resistance": "80%",
+            "adrenaline_boost": "+20%",
+            "battery_life": "10yr",
+        },
     },
-
     # --- 2. SOFTWARE & RUNES (12) ---
     {
         "title": "Цифрова руна «Прошивка перевантаження»",
@@ -109,7 +154,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("450.00"),
         "stock_quantity": 50,
-        "specs": {"firmware": "2.4.1", "damage_boost": "+15%", "memory_footprint": "2RAM"},
+        "specs": {
+            "firmware": "2.4.1",
+            "damage_boost": "+15%",
+            "memory_footprint": "2RAM",
+        },
     },
     {
         "title": "Демон зламу «Чорний Лід: Немезида»",
@@ -117,7 +166,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("2200.00"),
         "stock_quantity": 30,
-        "specs": {"ice_breaker": "Level 5", "counter_hack": "fatal", "traceability": "0%"},
+        "specs": {
+            "ice_breaker": "Level 5",
+            "counter_hack": "fatal",
+            "traceability": "0%",
+        },
     },
     {
         "title": "Нейроруна «Сингулярність пам'яті»",
@@ -125,7 +178,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("1800.00"),
         "stock_quantity": 40,
-        "specs": {"ram_recovery": "+3.5/s", "buffer_expansion": "+4", "protocol": "Arcane-Cyber"},
+        "specs": {
+            "ram_recovery": "+3.5/s",
+            "buffer_expansion": "+4",
+            "protocol": "Arcane-Cyber",
+        },
     },
     {
         "title": "Скрипт «Коротке замикання EX»",
@@ -133,7 +190,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("1250.00"),
         "stock_quantity": 35,
-        "specs": {"upload_time": "0.8s", "electric_damage": "850 dmg", "drone_override": "true"},
+        "specs": {
+            "upload_time": "0.8s",
+            "electric_damage": "850 dmg",
+            "drone_override": "true",
+        },
     },
     {
         "title": "Декодер квантових шифрів «Крипто-Цунамі»",
@@ -141,7 +202,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("3400.00"),
         "stock_quantity": 15,
-        "specs": {"crack_speed": "128Tbps", "rsa_quantum_bypass": "true", "stealth": "100%"},
+        "specs": {
+            "crack_speed": "128Tbps",
+            "rsa_quantum_bypass": "true",
+            "stealth": "100%",
+        },
     },
     {
         "title": "Стелс-протокол «Фантомний вузол»",
@@ -157,7 +222,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("1650.00"),
         "stock_quantity": 28,
-        "specs": {"intrusion_detection": "AI-driven", "active_defense": "EMP feedback", "tier": "Enterprise"},
+        "specs": {
+            "intrusion_detection": "AI-driven",
+            "active_defense": "EMP feedback",
+            "tier": "Enterprise",
+        },
     },
     {
         "title": "Системний драйвер «Оверклок реакції 60fps»",
@@ -173,7 +242,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("4600.00"),
         "stock_quantity": 10,
-        "specs": {"quickhack_spread": "3 targets", "cooldown_reduction": "30%", "base_ram": "16"},
+        "specs": {
+            "quickhack_spread": "3 targets",
+            "cooldown_reduction": "30%",
+            "base_ram": "16",
+        },
     },
     {
         "title": "Вірус-руна «Синаптичний колапс»",
@@ -181,7 +254,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("2900.00"),
         "stock_quantity": 18,
-        "specs": {"direct_neural_dmg": "1200", "silent_execution": "true", "ram_cost": "7"},
+        "specs": {
+            "direct_neural_dmg": "1200",
+            "silent_execution": "true",
+            "ram_cost": "7",
+        },
     },
     {
         "title": "Експлойт «Скинути пам'ять сенсорів»",
@@ -189,7 +266,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("820.00"),
         "stock_quantity": 55,
-        "specs": {"camera_blind_duration": "45s", "turret_reboot": "true", "ram_cost": "3"},
+        "specs": {
+            "camera_blind_duration": "45s",
+            "turret_reboot": "true",
+            "ram_cost": "3",
+        },
     },
     {
         "title": "AI-супутник «Кортана Нео-Самурай»",
@@ -197,9 +278,12 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SOFTWARE,
         "price": Decimal("5200.00"),
         "stock_quantity": 7,
-        "specs": {"combat_predictions": "realtime", "tactical_hud": "holographic", "personality": "Loyal Ronin"},
+        "specs": {
+            "combat_predictions": "realtime",
+            "tactical_hud": "holographic",
+            "personality": "Loyal Ronin",
+        },
     },
-
     # --- 3. ALCHEMY & BIOTECH (10) ---
     {
         "title": "Еліксир «Рідкий хром: Концентрація»",
@@ -207,7 +291,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.ALCHEMY,
         "price": Decimal("180.00"),
         "stock_quantity": 100,
-        "specs": {"focus_duration": "4h", "cyberpsychosis_reduction": "25%", "volume": "50ml"},
+        "specs": {
+            "focus_duration": "4h",
+            "cyberpsychosis_reduction": "25%",
+            "volume": "50ml",
+        },
     },
     {
         "title": "Нейростимулятор «МаксДок Версія 4»",
@@ -223,7 +311,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.ALCHEMY,
         "price": Decimal("350.00"),
         "stock_quantity": 40,
-        "specs": {"heavy_metal_flush": "100%", "poison_neutralize": "instant", "side_effects": "none"},
+        "specs": {
+            "heavy_metal_flush": "100%",
+            "poison_neutralize": "instant",
+            "side_effects": "none",
+        },
     },
     {
         "title": "Рунічний відвар «Астральне нічне бачення»",
@@ -231,7 +323,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.ALCHEMY,
         "price": Decimal("280.00"),
         "stock_quantity": 60,
-        "specs": {"night_vision": "6h", "magic_aura_sight": "true", "taste": "Bitter mint"},
+        "specs": {
+            "night_vision": "6h",
+            "magic_aura_sight": "true",
+            "taste": "Bitter mint",
+        },
     },
     {
         "title": "Суспензія «Нано-регенерація м'язових волокон»",
@@ -247,7 +343,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.ALCHEMY,
         "price": Decimal("140.00"),
         "stock_quantity": 90,
-        "specs": {"thermal_conductivity": "14.5 W/mK", "viscosity": "medium", "dielectric": "true"},
+        "specs": {
+            "thermal_conductivity": "14.5 W/mK",
+            "viscosity": "medium",
+            "dielectric": "true",
+        },
     },
     {
         "title": "Синтетичний ін'єктор «Кібер-Адреналін Mk.3»",
@@ -279,9 +379,12 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.ALCHEMY,
         "price": Decimal("890.00"),
         "stock_quantity": 18,
-        "specs": {"mana_recovery": "instant", "dimension_resonance": "stable", "rarity": "Legendary"},
+        "specs": {
+            "mana_recovery": "instant",
+            "dimension_resonance": "stable",
+            "rarity": "Legendary",
+        },
     },
-
     # --- 4. SERVICES & CLINIC PROCEDURES (8) ---
     {
         "title": "Повне калібрування нейрошини та кібердеки",
@@ -297,7 +400,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("2500.00"),
         "stock_quantity": 50,
-        "specs": {"anesthesia": "Neural-Sleep", "surgeon_tier": "Master Ripperdoc", "rehab_days": "1"},
+        "specs": {
+            "anesthesia": "Neural-Sleep",
+            "surgeon_tier": "Master Ripperdoc",
+            "rehab_days": "1",
+        },
     },
     {
         "title": "Прошивка BIOS імплантів зі зняттям корпоративних локів",
@@ -305,7 +412,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("1200.00"),
         "stock_quantity": 80,
-        "specs": {"corp_trace_removal": "Arasaka/Militech", "overclock_unlock": "true", "undetectable": "true"},
+        "specs": {
+            "corp_trace_removal": "Arasaka/Militech",
+            "overclock_unlock": "true",
+            "undetectable": "true",
+        },
     },
     {
         "title": "Екстрений ремонт гідравліки бойових приводів",
@@ -313,7 +424,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("1450.00"),
         "stock_quantity": 40,
-        "specs": {"dispatch_time": "15min", "replacement_parts": "OEM Military", "field_service": "true"},
+        "specs": {
+            "dispatch_time": "15min",
+            "replacement_parts": "OEM Military",
+            "field_service": "true",
+        },
     },
     {
         "title": "Діагностика сумісності біо-модифікацій (Аудит психозу)",
@@ -321,7 +436,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("650.00"),
         "stock_quantity": 120,
-        "specs": {"scan_depth": "Deep Cortex", "report_format": "Encrypted Holo", "accuracy": "99.8%"},
+        "specs": {
+            "scan_depth": "Deep Cortex",
+            "report_format": "Encrypted Holo",
+            "accuracy": "99.8%",
+        },
     },
     {
         "title": "Встановлення та юстування оптичного камуфляжу",
@@ -329,7 +448,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("1900.00"),
         "stock_quantity": 30,
-        "specs": {"fiber_optic_mesh": "Full body", "calibration": "Auto-spectrum", "duration": "4h"},
+        "specs": {
+            "fiber_optic_mesh": "Full body",
+            "calibration": "Auto-spectrum",
+            "duration": "4h",
+        },
     },
     {
         "title": "Очищення системної пам'яті від цифрових слідів злому",
@@ -337,7 +460,11 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("980.00"),
         "stock_quantity": 70,
-        "specs": {"zero_fill_passes": "7", "netwatch_clean": "certified", "time": "45min"},
+        "specs": {
+            "zero_fill_passes": "7",
+            "netwatch_clean": "certified",
+            "time": "45min",
+        },
     },
     {
         "title": "Страховий контракт «Траума Тім Ескорт Платина»",
@@ -345,6 +472,10 @@ PRODUCTION_CATALOG_DATA: list[dict[str, Any]] = [
         "category": ItemCategory.SERVICE,
         "price": Decimal("4900.00"),
         "stock_quantity": 15,
-        "specs": {"response_time": "180 seconds", "armed_av": "Quad-rotor Gunship", "coverage": "Worldwide"},
+        "specs": {
+            "response_time": "180 seconds",
+            "armed_av": "Quad-rotor Gunship",
+            "coverage": "Worldwide",
+        },
     },
 ]

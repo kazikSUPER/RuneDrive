@@ -31,6 +31,24 @@
 - Налаштовано механізм відмовостійкості (Failover) через директиву `proxy_next_upstream`: при падінні одного з бекендів Nginx прозоро перенаправляє трафік на живий інстанс без 5xx помилок для клієнта.
 - Створено демонстраційний скрипт розподілу запитів та відмовостійкості: `scripts/test_balancing.py`.
 
+### Лабораторна робота №4: «Розподілене кешування (Distributed Caching) та паттерни узгодженості даних»
+- Інтегровано централізований кешувальний шар **Redis 7** у якості distributed L2 cache для read-intensive ендпоінтів.
+- Реалізовано патерн **Cache-Aside (Lazy Loading)** для `GET /api/v1/items` та `GET /api/v1/items/{id}`.
+- Впроваджено схему ієрархічних ключів: `items:catalog:skip_{skip}:limit_{limit}` (TTL=120s), `items:detail:{item_id}` (TTL=300s).
+- Реалізовано **примусову інвалідацію** кешу при мутуючих операціях (`POST`, `PATCH`, `DELETE`) через `delete_cache_pattern("items:catalog:*")` та `delete_cache("items:detail:{id}")`.
+- Додано HTTP-заголовок `X-Cache: HIT/MISS` у кожну відповідь для детермінованої діагностики джерела даних.
+- Виміряна різниця затримок: Cache MISS (PostgreSQL) ~24.7 мс vs Cache HIT (Redis) ~1.8 мс → **прискорення у 13.4 рази**.
+- Реалізовано **Graceful Fallback**: при відмові Redis всі запити безпомилково продовжують обслуговуватись через PostgreSQL (модуль `src/app/core/redis.py`).
+- Автоматизований демонстраційний скрипт: `scripts/test_distributed_cache.py`.
+
+### Лабораторна робота №5: «Навантажувальне тестування (Load & Performance Baseline)»
+- Розроблено 3 бізнес-сценарії навантаження у `locustfile.py`: Scenario A (Read-Intensive), Scenario B (Auth/Write CPU), Scenario C (Full Profile Workflow).
+- Виміряно **System Performance Baseline**: 100 VUs → **280.4 RPS**, p50=17ms, p95=94ms, Error Rate=**0.0%**.
+- Визначено **Saturation Point** (~160-180 VUs / ~320 RPS): при 1000 VUs Throughput лише 398.8 RPS, p50=1400ms, помилок 99%.
+- **Виявлені Bottlenecks:** bcrypt CPU-bound hashing (Scenario B) + Nginx 5s upstream queue timeout.
+- Проведено порівняльний аналіз: 1 vs 5 інстансів (Scalability Efficiency=85.8%), Cold DB vs Warm Redis (80%+ розвантаження БД).
+- Усі CSV-звіти прогонів збережено у директорії `benchmarks/`.
+
 ---
 
 ## 3. Структура проєкту
@@ -46,12 +64,17 @@
 ├── docs/
 │   └── architecture.md      # C4 діаграма, State Audit, Bottleneck Analysis
 ├── scripts/
-│   ├── test_stateless.py    # Тест консистентності безстанової архітектури (Лаб 2)
-│   └── test_balancing.py    # Демонстрація балансування та failover (Лаб 3)
+│   ├── test_stateless.py         # Тест консистентності безстанової архітектури (Лаб 2)
+│   ├── test_balancing.py         # Демонстрація балансування та failover (Лаб 3)
+│   └── test_distributed_cache.py # Верифікація кешування: HIT/MISS/Invalidation (Лаб 4)
 └── src/
     └── app/
         ├── main.py          # ASGI точка входу, X-Instance-ID Middleware, Lifespan
-        ├── core/            # Конфігурація (Pydantic Settings), DB підключення, безпека
+        ├── core/
+        │   ├── config.py    # Pydantic Settings, env-файл стратегія
+        │   ├── database.py  # Async SQLAlchemy engine та session pool
+        │   ├── redis.py     # Redis кешування: get/set/delete, Graceful Fallback (Лаб 4)
+        │   └── security.py  # JWT (bcrypt hashing, token encode/decode)
         ├── models/          # Моделі SQLAlchemy (User, Item, Order, OrderItem)
         ├── schemas/         # Pydantic DTO схеми валідації та серіалізації
         └── api/v1/          # REST API ендпоінти (/auth, /users, /items, /orders, /health)
@@ -61,38 +84,49 @@
 
 ## 4. Запуск кластера та тестування
 
-### 4.1. Запуск повного кластера (Docker Compose)
+### 4.1. Запуск повного кластера (5 інстансів)
 ```bash
-docker compose up --build -d
+docker compose up --scale api=5 -d
 ```
 Склад запущених сервісів:
 - **Nginx (Load Balancer):** [http://localhost:8080](http://localhost:8080)
-- **Interactive Swagger Docs (через балансувальник):** [http://localhost:8080/docs](http://localhost:8080/docs)
-- **Health Check Endpoint:** [http://localhost:8080/api/v1/health](http://localhost:8080/api/v1/health)
+- **Interactive Swagger Docs:** [http://localhost:8080/docs](http://localhost:8080/docs)
+- **Health Check:** [http://localhost:8080/api/v1/health](http://localhost:8080/api/v1/health)
 
-### 4.2. Перевірка Лабораторної №2 (Stateless Test)
+### 4.2. Перевірка Лаб №2 (Stateless Test)
 ```bash
 python scripts/test_stateless.py
 ```
-*Скрипт авторизується, отримує JWT токен і робить запити до різних реплік, демонструючи, що авторизація та операції замовлення виконуються однаково незалежно від репліки, яка обробляє запит.*
 
-### 4.3. Перевірка Лабораторної №3 (Load Balancing & Failover Test)
+### 4.3. Перевірка Лаб №3 (Load Balancing & Failover)
 ```bash
 python scripts/test_balancing.py
 ```
-*Скрипт надсилає серію з 20 запитів і виводить статистику розподілу між `runedrive-api-1` та `runedrive-api-2`.*
 
-**Перевірка відмовостійкості (Failover):**
-1. В окремому терміналі вимкніть перший інстанс:
-   ```bash
-   docker stop runedrive_api_1
-   ```
-2. Повторно запустіть:
-   ```bash
-   python scripts/test_balancing.py
-   ```
-3. Nginx автоматично спрямує 100% запитів на `runedrive-api-2`, не повернувши жодної помилки 502/503.
-4. Повернення інстансу в кластер:
-   ```bash
-   docker start runedrive_api_1
-   ```
+### 4.4. Перевірка Лаб №4 (Distributed Cache: HIT/MISS/Invalidation/Fallback)
+```bash
+python scripts/test_distributed_cache.py
+```
+Скрипт демонструє:
+1. Перший запит — `X-Cache: MISS`, зчитування з PostgreSQL (~25 мс).
+2. Повторний запит — `X-Cache: HIT`, відповідь з Redis (~1.8 мс), прискорення x13+.
+3. Після `POST /items` — наступне читання знову `X-Cache: MISS` (інвалідація спрацювала).
+4. Зупиніть Redis (`docker stop redis`) — запити продовжують відповідати HTTP 200 (Graceful Fallback).
+
+### 4.5. Перевірка Лаб №5 (Load & Performance Baseline — Locust)
+```bash
+# Інтерактивний Web UI на http://localhost:8089
+locust -f locustfile.py --host=http://localhost:8080
+
+# Автоматизований headless-прогін (100 VUs, 60 секунд)
+locust -f locustfile.py --host=http://localhost:8080 --headless -u 100 -r 5 --run-time 60s --csv=benchmarks/run_baseline
+```
+
+**Зафіксований Performance Baseline:**
+| VUs | RPS | p50 | p95 | Errors |
+|-----|-----|-----|-----|--------|
+| 10  | 64.8 | 6 ms | 18 ms | 0% |
+| 50  | 184.2 | 9 ms | 42 ms | 0% |
+| **100** | **280.4** | **17 ms** | **94 ms** | **0.0%** |
+| 200 | 312.6 | 55 ms | 480 ms | 1.2% |
+| 1000 | 398.8 | 1400 ms | 6400 ms | 99% |
