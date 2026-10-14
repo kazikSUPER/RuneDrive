@@ -242,7 +242,39 @@ helm/runedrive/
     └── NOTES.txt
 ```
 
-### 6.2. Перевірка та порівняння середовищ (без встановлення)
+### 6.2. version vs appVersion у Chart.yaml
+
+- `version: 0.1.0` — версія **самого чарта** як пакета шаблонів і значень. Змінюється,
+  коли змінюються шаблони чи дефолти чарта; використовується Helm для відстеження
+  релізів чарта та при публікації в реєстр.
+- `appVersion: "1.0.0"` — версія **застосунку**, який чарт розгортає. Для RuneDrive це
+  базова версія API (інформаційна; фактичний тег образу задається `image.tag` у values).
+
+### 6.3. Таблиця параметрів values.yaml
+
+| Параметр | Дефолт (dev) | values-prod | Опис |
+| :--- | :--- | :--- | :--- |
+| `image.repository` / `image.tag` | `runedrive` / `1.0.0` | `runedrive` / `1.1.0` | Репозиторій і тег образу API |
+| `image.pullPolicy` | `IfNotPresent` | те саме | Політика завантаження образу |
+| `replicaCount` | `2` | `3` | Кількість реплік API |
+| `service.type` / `service.port` | `ClusterIP` / `80` | те саме | Тип і порт сервісу |
+| `resources.requests` / `resources.limits` | 100m/256Mi, 500m/512Mi | 250m/512Mi, 1/1Gi | Ресурси API |
+| `config.ENVIRONMENT` / `config.APP_ENV` | `k8s-dev` | `k8s-production` | Ім'я середовища |
+| `config.PROJECT_NAME` | `RuneDrive API` | те саме | Назва проєкту |
+| `config.DEBUG` | `true` | `false` | Режим налагодження |
+| `config.POSTGRES_PORT/DB/USER` | 5432 / runedrive / runedrive | те саме | Параметри БД |
+| `config.REDIS_PORT` | `6379` | те саме | Порт кешу |
+| `ingress.enabled` / `ingress.host` | `false` / `runedrive.local` | `true` / `runedrive.local` | Увімкнення Ingress |
+| `postgres.image` | `postgres:16-alpine` | те саме | Образ БД |
+| `postgres.persistence.enabled/size/storageClass` | `true` / `2Gi` / `standard` | те саме | PVC для БД |
+| `postgres.resources` | 100m/256Mi, 500m/512Mi | те саме | Ресурси БД |
+| `redis.image` / `redis.resources` | `redis:7-alpine` / мінімальні | те саме | Кеш |
+| `secrets.POSTGRES_PASSWORD` / `secrets.JWT_SECRET_KEY` | демо-значення | демо-значення | → Secret (реальні паролі не зберігаються) |
+
+> `POSTGRES_SERVER` і `REDIS_HOST` у ConfigMap не задаються у values — вони виводяться
+> з імені релізу шаблоном (`<release>-postgres`, `<release>-redis`).
+
+### 6.4. Перевірка та порівняння середовищ (без встановлення)
 
 ```bash
 helm lint helm/runedrive
