@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runedrive-config
+  namespace: runedrive
+  labels:
+    app: runedrive
+data:
+  ENVIRONMENT: "k8s-sandbox"
+  APP_ENV: "k8s-sandbox"
+  PROJECT_NAME: "RuneDrive API"
+  DEBUG: "false"
+  POSTGRES_SERVER: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "runedrive"
+  POSTGRES_USER: "runedrive"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
