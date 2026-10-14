@@ -177,16 +177,37 @@ kubectl get pods,svc,pvc,ingress -n runedrive
 ```bash
 kubectl port-forward svc/runedrive-api 8080:80 -n runedrive
 curl http://localhost:8080/api/v1/health
+curl http://localhost:8080/api/v1/ready
 ```
 
-Або через Ingress: IP кластера (`minikube ip`) + запис `runedrive.local` у hosts.
+> На Windows з драйвером docker IP кластера (`minikube ip`) з хоста недосяжний без
+> `minikube tunnel` (адмін-права), тому балансування та доступність демонструються
+> запитами з одноразового curl-пода всередині кластера.
 
 ### 5.5. Демонстрація життєвого циклу
 
 ```bash
 kubectl delete pod <POD> -n runedrive                                      # самовідновлення
 kubectl scale deployment/runedrive-api --replicas=4 -n runedrive           # масштабування
+```
+
+Розподіл трафіку між репліками (різні `instance_id` у відповідях):
+
+```bash
+kubectl run curl-dist --rm -i --image=curlimages/curl --restart=Never -n runedrive -- \
+  sh -c 'for i in $(seq 1 12); do curl -s http://runedrive-api/api/v1/health | grep -o "\"instance_id\":\"[^\"]*\""; done'
+```
+
+Rolling update з контролем доступності (спостерігач всередині кластера):
+
+```bash
+kubectl run av-loop --image=curlimages/curl --restart=Never -n runedrive -- \
+  sh -c 'i=0; while [ $i -lt 200 ]; do curl -s -o /dev/null -w "%{http_code}\n" http://runedrive-api/api/v1/health; i=$((i+1)); sleep 0.4; done'
+
 kubectl set image deployment/runedrive-api api=runedrive:1.1.0 -n runedrive   # rolling update
+kubectl rollout status deployment/runedrive-api -n runedrive
+kubectl logs av-loop -n runedrive | sort | uniq -c                            # суцільні 200
+kubectl delete pod av-loop -n runedrive
 kubectl rollout history deployment/runedrive-api -n runedrive              # історія
 kubectl rollout undo deployment/runedrive-api -n runedrive                 # відкат
 ```
