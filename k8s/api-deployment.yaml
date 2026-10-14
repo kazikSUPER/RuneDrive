@@ -22,7 +22,6 @@ spec:
     spec:
       containers:
         - name: api
-          # Образ збирається локально та завантажується в minikube (minikube image load)
           image: runedrive:1.0.0
           imagePullPolicy: IfNotPresent
           ports:

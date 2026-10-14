@@ -6,7 +6,6 @@ metadata:
   labels:
     app: postgres
 spec:
-  # Recreate, бо PVC з accessMode ReadWriteOnce не можна монтувати у дві репліки одночасно
   strategy:
     type: Recreate
   replicas: 1
