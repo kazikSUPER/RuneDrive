@@ -28,6 +28,8 @@ async def health_check() -> dict[str, Any]:
         "version": settings.VERSION,
         "debug": settings.DEBUG,
         "instance_id": INSTANCE_ID,
+        "cluster_mode": "kubernetes",
+        "release": "v1.1.0",
     }
 
 

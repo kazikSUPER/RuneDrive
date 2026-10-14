@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     PROJECT_NAME: str = "RuneDrive API"
-    VERSION: str = "0.1.0"
+    VERSION: str = "1.1.0"
     DESCRIPTION: str = "Highload Marketplace for Cybernetic and Magical Modifications"
     API_V1_STR: str = "/api/v1"
 
