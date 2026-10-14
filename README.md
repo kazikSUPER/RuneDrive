@@ -130,3 +130,63 @@ locust -f locustfile.py --host=http://localhost:8080 --headless -u 100 -r 5 --ru
 | **100** | **280.4** | **17 ms** | **94 ms** | **0.0%** |
 | 200 | 312.6 | 55 ms | 480 ms | 1.2% |
 | 1000 | 398.8 | 1400 ms | 6400 ms | 99% |
+
+---
+
+## 5. Розгортання в Kubernetes (Лабораторна робота №3 DevOps)
+
+Каталог `k8s/` містить маніфести Kubernetes для розгортання повного кластера RuneDrive
+у локальному minikube. Префікси імен файлів (00-…-30-) гарантують порядок застосування:
+спочатку namespace, конфігурація та PVC, потім сервіси даних і наприкінці API з Ingress.
+
+### 5.1. Склад об'єктів (`k8s/`)
+
+| Файл | Об'єкт | Призначення |
+| :--- | :--- | :--- |
+| `00-namespace.yaml` | Namespace `runedrive` | Ізоляція об'єктів проєкту |
+| `01-configmap.yaml` | ConfigMap | `PROJECT_NAME`, `DEBUG`, `ENVIRONMENT`, `POSTGRES_SERVER/PORT/DB/USER`, `REDIS_HOST/PORT` |
+| `02-secret.yaml` | Secret | `POSTGRES_PASSWORD`, `JWT_SECRET_KEY` (демо-значення) |
+| `03-postgres-pvc.yaml` | PersistentVolumeClaim | 2Gi, StorageClass `standard` |
+| `10-postgres-deployment.yaml` | Deployment | PostgreSQL 16-alpine + PVC, strategy Recreate |
+| `11-postgres-service.yaml` | Service | ClusterIP :5432 |
+| `12-redis-deployment.yaml` | Deployment | Redis 7-alpine (кеш без персистентності) |
+| `13-redis-service.yaml` | Service | ClusterIP :6379 |
+| `20-api-deployment.yaml` | Deployment | 2 репліки, liveness `/api/v1/health`, readiness `/api/v1/ready`, requests/limits, RollingUpdate (maxUnavailable: 0, maxSurge: 1) |
+| `21-api-service.yaml` | Service | ClusterIP :80 -> :8000 |
+| `30-ingress.yaml` | Ingress | Host `runedrive.local` -> Service `runedrive-api` |
+
+### 5.2. Підготовка середовища
+
+```bash
+minikube start --driver=docker --cpus=4 --memory=4096mb
+minikube addons enable metrics-server
+minikube addons enable ingress
+minikube image load runedrive:1.0.0 runedrive:1.1.0
+```
+
+### 5.3. Розгортання однією командою
+
+```bash
+kubectl apply -f k8s/
+kubectl rollout status deployment/runedrive-api -n runedrive
+kubectl get pods,svc,pvc,ingress -n runedrive
+```
+
+### 5.4. Доступ до застосунку
+
+```bash
+kubectl port-forward svc/runedrive-api 8080:80 -n runedrive
+curl http://localhost:8080/api/v1/health
+```
+
+Або через Ingress: IP кластера (`minikube ip`) + запис `runedrive.local` у hosts.
+
+### 5.5. Демонстрація життєвого циклу
+
+```bash
+kubectl delete pod <POD> -n runedrive                                      # самовідновлення
+kubectl scale deployment/runedrive-api --replicas=4 -n runedrive           # масштабування
+kubectl set image deployment/runedrive-api api=runedrive:1.1.0 -n runedrive   # rolling update
+kubectl rollout history deployment/runedrive-api -n runedrive              # історія
+kubectl rollout undo deployment/runedrive-api -n runedrive                 # відкат
+```
