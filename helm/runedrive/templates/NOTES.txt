@@ -1,0 +1,18 @@
+RuneDrive API успішно розгорнуто!
+
+Реліз: {{ .Release.Name }} (namespace: {{ .Release.Namespace }})
+Версія застосунку: {{ .Chart.AppVersion }} (образ {{ .Values.image.repository }}:{{ .Values.image.tag }})
+
+1. Перевірте статус подів:
+   kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+
+2. Швидкий доступ до API (port-forward):
+   kubectl port-forward svc/{{ include "runedrive.fullname" . }}-api 8080:80 -n {{ .Release.Namespace }}
+   curl http://localhost:8080/api/v1/health
+
+{{- if .Values.ingress.enabled }}
+
+3. Ingress увімкнений: додайте у hosts запис
+   <minikube-ip>  {{ .Values.ingress.host }}
+   після чого API доступний на http://{{ .Values.ingress.host }}/api/v1/health
+{{- end }}

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "runedrive.fullname" . }}-pre-upgrade-check
+  labels:
+    {{- include "runedrive.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: curlimages/curl
+          command:
+            - sh
+            - -c
+            - >
+              echo "[pre-upgrade hook] Перевірка доступності поточного релізу перед оновленням...";
+              curl -fsS http://{{ include "runedrive.fullname" . }}-api/api/v1/health &&
+              echo "[pre-upgrade hook] Реліз здоровий, оновлення дозволено"

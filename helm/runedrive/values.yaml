@@ -1,0 +1,62 @@
+image:
+  repository: runedrive
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  ENVIRONMENT: "k8s-sandbox"
+  APP_ENV: "k8s-sandbox"
+  PROJECT_NAME: "RuneDrive API"
+  DEBUG: "true"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "runedrive"
+  POSTGRES_USER: "runedrive"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+
+secrets:
+  POSTGRES_PASSWORD: "k8s_demo_password_change_me"
+  JWT_SECRET_KEY: "k8s_demo_jwt_secret_change_me"
+
+ingress:
+  enabled: false
+  className: nginx
+  host: runedrive.local
+
+postgres:
+  image: postgres:16-alpine
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClass: standard
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+redis:
+  image: redis:7-alpine
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi

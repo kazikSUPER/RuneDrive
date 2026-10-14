@@ -1,0 +1,21 @@
+# Профіль розробки (dev): дрібні ресурси, debug увімкнений, без Ingress
+replicaCount: 2
+
+config:
+  ENVIRONMENT: "k8s-dev"
+  APP_ENV: "k8s-dev"
+  DEBUG: "true"
+
+image:
+  tag: "1.0.0"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+ingress:
+  enabled: false

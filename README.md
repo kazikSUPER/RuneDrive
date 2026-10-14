@@ -211,3 +211,64 @@ kubectl delete pod av-loop -n runedrive
 kubectl rollout history deployment/runedrive-api -n runedrive              # історія
 kubectl rollout undo deployment/runedrive-api -n runedrive                 # відкат
 ```
+
+---
+
+## 6. Helm-чарт (Лабораторна робота №4 DevOps)
+
+Маніфести з ЛР№3 переписані у власний Helm-чарт `helm/runedrive/`. Усі значення
+параметризовані через `values.yaml`; імена об'єктів будуються з імені релізу
+(`runedrive.fullname` = `<release>-<chart>`), тож чарт можна встановлювати двічі
+в один кластер без конфліктів.
+
+### 6.1. Структура чарта
+
+```
+helm/runedrive/
+├── Chart.yaml            # version: 0.1.0 (чарт), appVersion: "1.0.0" (застосунок)
+├── values.yaml           # дефолти = середовище розробки (dev)
+├── values-dev.yaml       # профіль dev: 2 репліки, DEBUG=true, Ingress вимкнений
+├── values-prod.yaml      # профіль prod: 3 репліки, тег 1.1.0, вищі ресурси, Ingress on
+└── templates/
+    ├── _helpers.tpl      # runedrive.fullname + runedrive.labels (include в усіх шаблонах)
+    ├── configmap.yaml    # з .Values.config; хости postgres/redis виводяться з імені релізу
+    ├── secret.yaml       # значення з .Values.secrets
+    ├── postgres-pvc.yaml / postgres-deployment.yaml / postgres-service.yaml
+    ├── redis-deployment.yaml / redis-service.yaml
+    ├── deployment.yaml / service.yaml
+    ├── ingress.yaml      # генерується лише якщо .Values.ingress.enabled
+    ├── pre-upgrade-hook.yaml   # хук pre-upgrade: перевірка здоров'я релізу
+    ├── tests/test-connection.yaml  # тест релізу (helm test)
+    └── NOTES.txt
+```
+
+### 6.2. Перевірка та порівняння середовищ (без встановлення)
+
+```bash
+helm lint helm/runedrive
+helm template runedrive helm/runedrive                       # дефолти (dev)
+helm template runedrive helm/runedrive -f helm/runedrive/values-prod.yaml
+```
+
+### 6.3. Встановлення (на чистий namespace)
+
+```bash
+kubectl delete namespace runedrive   # прибрати реліз ЛР№3
+helm install runedrive helm/runedrive -n runedrive --create-namespace
+helm list -n runedrive
+helm get values runedrive -n runedrive
+```
+
+### 6.4. Життєвий цикл релізу
+
+```bash
+helm upgrade runedrive helm/runedrive --set image.tag=1.1.0 -n runedrive   # rev 2 (--set)
+helm upgrade runedrive helm/runedrive -f helm/runedrive/values-prod.yaml -n runedrive  # rev 3 (prod)
+helm test runedrive -n runedrive                                           # тест релізу
+helm history runedrive -n runedrive                                        # ревізії 1-4
+helm rollback runedrive 1 -n runedrive                                     # rev 4 = копія rev 1
+helm uninstall runedrive -n runedrive                                      # чистка всього
+```
+
+Стан релізів Helm зберігає у Secret'ах namespace:
+`sh.helm.release.v1.runedrive.v<N>` з міткою `owner=helm`.
