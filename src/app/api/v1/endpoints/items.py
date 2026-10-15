@@ -74,7 +74,6 @@ async def create_item(
     await db.commit()
     await db.refresh(item)
 
-    # Інвалідація списків каталогу в Redis
     await delete_cache_pattern("items:catalog:*")
 
     return item
@@ -149,7 +148,6 @@ async def update_item(
     await db.commit()
     await db.refresh(item)
 
-    # Інвалідація детального кешу товару та списків каталогу
     await delete_cache(f"items:detail:{item_id}")
     await delete_cache_pattern("items:catalog:*")
 
@@ -186,6 +184,5 @@ async def delete_item(
     await db.delete(item)
     await db.commit()
 
-    # Інвалідація детального кешу товару та списків каталогу
     await delete_cache(f"items:detail:{item_id}")
     await delete_cache_pattern("items:catalog:*")

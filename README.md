@@ -42,7 +42,8 @@
 - Автоматизований демонстраційний скрипт: `scripts/test_distributed_cache.py`.
 
 ### Лабораторна робота №5: «Навантажувальне тестування (Load & Performance Baseline)»
-- Розроблено 3 бізнес-сценарії навантаження у `locustfile.py`: Scenario A (Read-Intensive), Scenario B (Auth/Write CPU), Scenario C (Full Profile Workflow).
+- Розроблено 3 бізнес-сценарії навантаження у `load-tests/locustfile.py`: Scenario A (Read-Intensive), Scenario B (Auth/Write CPU), Scenario C (Full Profile Workflow).
+- Реалізовано **Warm-up фазу** та **Staging Ramp-Up профіль** (10 → 25 → 50 → 100 → 200 VUs, по 60с на ступінь) через `StagedRampUpShape` (активується `LOCUST_STAGED=1`).
 - Виміряно **System Performance Baseline**: 100 VUs → **280.4 RPS**, p50=17ms, p95=94ms, Error Rate=**0.0%**.
 - Визначено **Saturation Point** (~160-180 VUs / ~320 RPS): при 1000 VUs Throughput лише 398.8 RPS, p50=1400ms, помилок 99%.
 - **Виявлені Bottlenecks:** bcrypt CPU-bound hashing (Scenario B) + Nginx 5s upstream queue timeout.
@@ -59,6 +60,8 @@
 ├── Dockerfile               # Контейнеризація FastAPI застосунку
 ├── pyproject.toml           # Налаштування Ruff
 ├── requirements.txt         # Python залежності
+├── load-tests/
+│   └── locustfile.py        # Сценарії навантаження A/B/C + Warm-up/Staging Ramp-Up (Лаб 5)
 ├── nginx/
 │   └── nginx.conf           # Конфігурація Upstream пулу, алгоритмів та Failover
 ├── docs/
@@ -116,11 +119,31 @@ python scripts/test_distributed_cache.py
 ### 4.5. Перевірка Лаб №5 (Load & Performance Baseline — Locust)
 ```bash
 # Інтерактивний Web UI на http://localhost:8089
-locust -f locustfile.py --host=http://localhost:8080
+locust -f load-tests/locustfile.py --host=http://localhost:8080
 
 # Автоматизований headless-прогін (100 VUs, 60 секунд)
-locust -f locustfile.py --host=http://localhost:8080 --headless -u 100 -r 5 --run-time 60s --csv=benchmarks/run_baseline
+locust -f load-tests/locustfile.py --host=http://localhost:8080 --headless -u 100 -r 5 --run-time 60s --csv=benchmarks/run_baseline
 ```
+
+**Staged-профіль (Warm-up + Ramp-Up 10 → 25 → 50 → 100 → 200 VUs):**
+
+Активується змінною оточення `LOCUST_STAGED=1`. Профіль включає:
+1. **Warm-up** (5 VUs, 30с) — розігрів пулів з'єднань asyncpg та прогрів Redis-кешу,
+   щоб Cold Cache не спотворював заміри основних ступенів.
+2. **Staging Ramp-Up** — 10 → 25 → 50 → 100 → 200 VUs, по 60с на ступінь
+   (фіксація RPS, p50/p95/p99, Error Rate на кожному рівні).
+3. **Ramp-down** — плавне завершення та фіналізація CSV-звітів.
+
+```bash
+# Git Bash / Linux / macOS
+LOCUST_STAGED=1 locust -f load-tests/locustfile.py --host=http://localhost:8080 --headless --csv=benchmarks/staged_run
+
+# Windows PowerShell
+$env:LOCUST_STAGED="1"; locust -f load-tests/locustfile.py --host=http://localhost:8080 --headless --csv=benchmarks/staged_run
+```
+
+> При активному `LOCUST_STAGED=1` аргументи `-u` / `-r` ігноруються —
+> профіль повністю керується класом `StagedRampUpShape`.
 
 **Зафіксований Performance Baseline:**
 | VUs | RPS | p50 | p95 | Errors |

@@ -1,4 +1,3 @@
-# Профіль розробки (dev): дрібні ресурси, debug увімкнений, без Ingress
 replicaCount: 2
 
 config:

@@ -20,7 +20,6 @@ spec:
           image: redis:7-alpine
           ports:
             - containerPort: 6379
-          # Кеш не потребує персистентності: при перезапуску просто прогрівся заново (Cache-Aside)
           resources:
             requests:
               cpu: 50m

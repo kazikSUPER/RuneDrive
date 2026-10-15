@@ -1,4 +1,3 @@
-# Профіль production: більше реплік, вищі ліміти, свіжий реліз, Ingress увімкнений
 replicaCount: 3
 
 config:
